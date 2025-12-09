@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/08 17:49:36 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/09 21:07:06 by mpedraza         ###   ########.fr       */
+/*   Created: 2025/11/11 17:38:52 by mpedraza          #+#    #+#             */
+/*   Updated: 2025/12/09 20:48:51 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
-
-# include <stdlib.h>
-# include <stdio.h>
-# include "libft/libft.h"
-# include <limits.h>
-
-typedef struct s_stack
+int	ft_atoi(const char *nptr)
 {
-	int 			value;
-	struct s_stack *next;
-}	t_stack;
+	int		val;
+	int		n;
 
-void	quit_push_swap();
-int		is_space(int c);
-int		ft_atoi_check(const char *nptr);
-t_stack *ft_stack_new(int *value);
-void	ft_stack_add_back(t_stack **stack, t_stack *new);
-
-#endif
+	val = 1;
+	n = 0;
+	while ((*nptr == ' ') || (*nptr >= 9 && *nptr <= 13))
+		nptr++;
+	if (*nptr == '-' || *nptr == '+')
+	{
+		if (*nptr == '-')
+			val = val * -1;
+		nptr++;
+	}
+	while (*nptr >= '0' && *nptr <= '9')
+	{
+		n = n * 10 + (*nptr - '0');
+		nptr++;
+	}
+	return (n * val);
+}
