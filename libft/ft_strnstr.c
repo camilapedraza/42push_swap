@@ -1,33 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/08 17:49:36 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/09 21:07:06 by mpedraza         ###   ########.fr       */
+/*   Created: 2025/09/18 11:22:45 by mpedraza          #+#    #+#             */
+/*   Updated: 2025/11/11 17:35:40 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#include "libft.h"
 
-# include <stdlib.h>
-# include <stdio.h>
-# include "libft/libft.h"
-# include <limits.h>
-
-typedef struct s_stack
+char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	int 			value;
-	struct s_stack *next;
-}	t_stack;
+	size_t	i;
+	size_t	j;
+	char	*b;
+	char	*l;
 
-void	quit_push_swap();
-int		is_space(int c);
-int		ft_atoi_check(const char *nptr);
-t_stack *ft_stack_new(int *value);
-void	ft_stack_add_back(t_stack **stack, t_stack *new);
-
-#endif
+	i = 0;
+	if (!*little)
+		return ((char *)big);
+	while (*big && i < len)
+	{
+		b = (char *)big;
+		l = (char *)little;
+		j = i;
+		while (*b == *l && *b && *l && j < len)
+		{
+			b++;
+			l++;
+			j++;
+		}
+		if (*l == '\0')
+			return ((char *)big);
+		big++;
+		i++;
+	}
+	return (NULL);
+}
