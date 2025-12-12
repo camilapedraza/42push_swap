@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:49:36 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/12 15:18:03 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/12 18:29:24 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 }	t_stack;
 
 t_stack *parse_input(int n, char **argv);
-char	*parse_list(const char *list, unsigned int start);
+char	*extract_argument(const char *list, unsigned int start);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	quit_push_swap();
 int		is_space(int c);
@@ -38,7 +38,7 @@ void	stack_free(t_stack **stack);
 int		stack_item_duplicate(t_stack **stack, t_stack **item);
 t_stack *build_stack(char *string);
 void	ft_putstr_fd(char *s, int fd);
-char	*string_join(char const *s1, char const *s2);
+char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlcpy(char *dst, const char *src, size_t siz);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *s);
