@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/12 18:51:55 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/12 20:14:41 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ int	main(int argc, char **argv)
 	// we don't get a stack back if anything fails in the process (program is quit)
 	a_stack = parse_input(argc, argv);
 	printf("stack received\n");
+	temp = a_stack;
+	while (temp)
+	{
+		printf("%d\n", temp->value);
+		temp = temp->next;
+	}
+	swap_a(&a_stack);
+	printf("swap!\n");
 	temp = a_stack;
 	while (temp)
 	{

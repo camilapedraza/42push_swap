@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:49:36 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/12 18:29:24 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/12 20:14:56 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t siz);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcat(char *dst, const char *src, size_t siz);
+void	swap_a(t_stack **stack_a);
 
 #endif
