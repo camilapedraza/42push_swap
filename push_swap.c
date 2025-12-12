@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/12 20:14:41 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/12 20:33:17 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,13 @@ int	main(int argc, char **argv)
 	t_stack *temp; // remove
 	
 	if (argc < 2)
-		//quit_push_swap();
-		return(1);
+		quit_push_swap();
 
 	// this prepares the input (stack built in order of args) and validates it
 	// we don't get a stack back if anything fails in the process (program is quit)
 	a_stack = parse_input(argc, argv);
+	// ------------------------------------------------------------------
+	// tester code from here on
 	printf("stack received\n");
 	temp = a_stack;
 	while (temp)
@@ -45,7 +46,7 @@ int	main(int argc, char **argv)
 		printf("%d\n", temp->value);
 		temp = temp->next;
 	}
-	swap_a(&a_stack);
+	swap(&a_stack);
 	printf("swap!\n");
 	temp = a_stack;
 	while (temp)

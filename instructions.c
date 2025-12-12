@@ -6,35 +6,29 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 19:37:44 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/12 20:13:00 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/12 20:31:10 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
 //t_stack	**stack_a;
-t_stack	**stack_b;
+//t_stack	**stack_b;
 
-void swap_a(t_stack **stack_a)
+void	swap(t_stack **stack)
 {
 	// sa (swap a): Swap the first 2 elements at the top of stack a.
 	// Do nothing if there is only one element or none.
-	int	temp;
 
-	temp = (*stack_a)->value;
-	(*stack_a)->value = (*stack_a)->next->value;
-	(*stack_a)->next->value = temp;
-}
-
-void	swap_b(void)
-{
 	// sb (swap b): Swap the first 2 elements at the top of stack b.
 	// Do nothing if there is only one element or none.
-	int temp;
+	int	temp;
 
-	temp = (*stack_b)->value;
-	(*stack_b)->value = (*stack_b)->next->value;
-	(*stack_b)->next->value = temp;
+	if (!stack || !*stack || stack_size(*stack) < 2)
+		return ;
+	temp = (*stack)->value;
+	(*stack)->value = (*stack)->next->value;
+	(*stack)->next->value = temp;
 }
 
 void	swap_both(void)
