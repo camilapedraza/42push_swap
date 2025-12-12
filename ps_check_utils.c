@@ -1,64 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap_utils.c                                  :+:      :+:    :+:   */
+/*   ps_check_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:03:50 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/09 21:05:22 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/12 15:19:32 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	quit_push_swap()
+int is_digit(int c)
 {
-	ft_putstr_fd("Error\n", 3);
-	exit(EXIT_FAILURE);
-}
-
-int		is_space(int c)
-{
-	if (!(c == ' ') && !(c >=9 || c <= 13))
+	if (!(c >= 48 && c <= 57))
 		return (0);
 	return (1);
 }
 
-t_stack	*ft_stack_new(int *value)
+int	is_space(int c)
 {
-	t_stack *stack;
-
-	stack = malloc(sizeof(t_stack));
-	if (!stack)
-		return (NULL);
-	stack->value = value;
-	stack->next = NULL;
-	return (stack);
+	if (!(c == ' ') && !(c >=9 && c <= 13))
+		return (0);
+	return (1);
 }
 
-void	ft_stack_add_back(t_stack **stack, t_stack *new)
-{
-	t_stack *temp;
-
-	if (!stack || !new)
-		return;
-	if (*stack == NULL)
-		*stack = new;
-	else
-	{
-		temp = *stack;
-		while (temp->next)
-			temp = temp->next;
-		temp->next = new;
-	}
-}
-
-int	ft_atoi_check(const char *nptr)
+int	atoi_check(const char *nptr)
 {
 	int		val;
 	long	n;
-	int		result;
 
 	val = 1;
 	n = 0;
@@ -76,6 +47,7 @@ int	ft_atoi_check(const char *nptr)
 		nptr++;
 	}
 	if (val * n > INT_MAX || val * n < INT_MIN)
+		// is this enough or do I need to free stuff?
 		quit_push_swap();
 	return (n * val);
 }
