@@ -6,7 +6,7 @@
 #    By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/08 17:48:59 by mpedraza          #+#    #+#              #
-#    Updated: 2025/12/12 18:29:35 by mpedraza         ###   ########.fr        #
+#    Updated: 2025/12/12 19:42:28 by mpedraza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ CFLAGS := -Wall -Wextra -Werror
 CPPFLAGS := -I .
 SOURCES := 	push_swap.c \
 			build_stack.c \
+			instructions.c \
 			ps_alloc_utils.c \
 			ps_check_utils.c \
 			ps_parse_utils.c \
