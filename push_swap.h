@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:49:36 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/12 20:14:56 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/12 20:32:20 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_stack *stack_new(int value);
 void	stack_add_back(t_stack **stack, t_stack *new);
 void	stack_free(t_stack **stack);
 int		stack_item_duplicate(t_stack **stack, t_stack **item);
+int		stack_size(t_stack *stack);
 t_stack *build_stack(char *string);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
@@ -43,6 +44,6 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t siz);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcat(char *dst, const char *src, size_t siz);
-void	swap_a(t_stack **stack_a);
+void	swap(t_stack **stack_a);
 
 #endif
