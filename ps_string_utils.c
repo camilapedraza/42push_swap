@@ -6,17 +6,11 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 15:00:12 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/12 15:16:16 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/12 18:19:27 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-void	ft_putstr_fd(char *s, int fd)
-{
-	while (*s)
-		write(fd, s++, 1);
-}
 
 size_t ft_strlen(const char *s)
 {
@@ -93,7 +87,7 @@ size_t ft_strlcat(char *dst, const char *src, size_t siz)
 	return (slen + dlen);
 }
 
-char	*string_join(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char *dest;
 	size_t len1;
