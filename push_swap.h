@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:49:36 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/13 16:09:45 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/13 18:43:25 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	stack_add_back(t_stack **stack, t_stack *new);
 void	stack_free(t_stack **stack);
 int		stack_item_duplicate(t_stack **stack, t_stack **item);
 int		stack_size(t_stack *stack);
-t_stack *build_stack(char *string);
+t_stack	*stack_reverse_find(t_stack *stack, int item);
+t_stack	*build_stack(char *string);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlcpy(char *dst, const char *src, size_t siz);
@@ -46,5 +47,7 @@ size_t	ft_strlen(const char *s);
 size_t	ft_strlcat(char *dst, const char *src, size_t siz);
 void	swap(t_stack **stack);
 void 	push(t_stack **src, t_stack **dest);
+void	rotate(t_stack **stack);
+void 	reverse_rotate(t_stack **stack);
 
 #endif

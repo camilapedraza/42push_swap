@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 19:37:44 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/13 17:02:48 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/13 18:43:54 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,16 @@ void	swap(t_stack **stack)
 
 	// sb (swap b): Swap the first 2 elements at the top of stack b.
 	// Do nothing if there is only one element or none.
-	int	temp;
+	t_stack *temp_x;
+	t_stack *temp_y;
 
-	if (!stack || !*stack || stack_size(*stack) < 2)
+	if (!stack || !*stack || !(*stack)->next)
 		return ;
-	temp = (*stack)->value;
-	(*stack)->value = (*stack)->next->value;
-	(*stack)->next->value = temp;
+	temp_x = *stack;
+	temp_y = (*stack)->next;
+	temp_x->next = temp_y->next;
+	temp_y->next = temp_x;
+	*stack = temp_y;
 }
 
 void	swap_both(void)
@@ -40,6 +43,7 @@ void	swap_both(void)
 void	push(t_stack **src, t_stack **dest)
 {
 	t_stack *temp;
+
 	if (!src || !*src || !dest)
 		return ;
 	temp = *src;
@@ -54,16 +58,23 @@ void	push(t_stack **src, t_stack **dest)
 	// Do nothing if a is empty.
 }
 
-void	rotate_a(void)
+void	rotate(t_stack **stack)
 {
+	t_stack *temp;
+	t_stack *last;
+
+	if (!stack || !*stack || !(*stack)->next)
+		return;
+	temp = *stack;
+	*stack = temp->next;
+	last = stack_reverse_find(*stack, -1);
+	last->next = temp;
+	temp->next = NULL;
 	// ra (rotate a): Shift up all elements of stack a by 1.
 	// The first element becomes the last one.
-}
 
-void	rotate_b(void)
-{
-// rb (rotate b): Shift up all elements of stack b by 1.
-// The first element becomes the last one.
+	// rb (rotate b): Shift up all elements of stack b by 1.
+	// The first element becomes the last one.
 }
 
 void	rotate_both(void)
@@ -71,14 +82,21 @@ void	rotate_both(void)
 	// rr : ra and rb at the same time.
 }
 
-void	reverse_rotate_a(void)
+void	reverse_rotate(t_stack **stack)
 {
+	t_stack *last;
+	t_stack *next_to_last;
+
+	if (!stack || !*stack || !(*stack)->next)
+		return;
+	next_to_last = stack_reverse_find(*stack, -2);
+	last = next_to_last->next;
+	next_to_last->next = NULL;
+	last->next = *stack;
+	*stack = last;
 	// rra (reverse rotate a): Shift down all elements of stack a by 1.
 	// The last element becomes the first one.
-}
 
-void	reverse_rotate_b(void)
-{
 	// rrb (reverse rotate b): Shift down all elements of stack b by 1.
 	// The last element becomes the first one.
 }

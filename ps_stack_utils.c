@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:03:50 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/13 16:05:42 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/13 18:42:59 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,23 @@ void	stack_add_back(t_stack **stack, t_stack *new)
 			temp = temp->next;
 		temp->next = new;
 	}
+}
+
+t_stack *stack_reverse_find(t_stack *stack, int item)
+{
+	t_stack *temp;
+
+	if (!stack)
+		return (NULL);
+	temp = stack;
+	if (item == -1)
+		while (temp->next)
+			temp = temp->next;
+	else if (item == -2)
+		if (temp->next)
+			while (temp->next->next)
+				temp = temp->next;
+	return (temp);
 }
 
 void	stack_free(t_stack **stack)
