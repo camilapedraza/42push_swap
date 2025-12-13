@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:03:50 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/12 20:26:51 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/13 16:05:42 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	stack_add_back(t_stack **stack, t_stack *new)
 	}
 }
 
-void stack_free(t_stack **stack)
+void	stack_free(t_stack **stack)
 {
 	t_stack *temp;
 
@@ -70,20 +70,4 @@ void stack_free(t_stack **stack)
 		free(*stack);
 		*stack = temp;
 	}
-}
-
-int stack_item_duplicate(t_stack **stack, t_stack **item)
-{
-	t_stack *temp;
-
-	if (!stack)
-		return (0);
-	temp = *stack;
-	while (temp)
-	{
-		if (temp->value == (*item)->value)
-			return (1);
-		temp = temp->next;
-	}
-	return (0);
 }
