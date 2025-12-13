@@ -6,11 +6,27 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 18:20:02 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/12 19:33:10 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/13 16:57:54 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+int stack_item_duplicate(t_stack **stack, t_stack **item)
+{
+	t_stack *temp;
+
+	if (!stack)
+		return (0);
+	temp = *stack;
+	while (temp)
+	{
+		if (temp->value == (*item)->value)
+			return (1);
+		temp = temp->next;
+	}
+	return (0);
+}
 
 int	atoi_check(const char *nptr)
 {
@@ -80,7 +96,7 @@ t_stack	*build_stack(char *string)
 			stack_free(&stack);
 			quit_push_swap();
 		}
-		printf("%s|\n", sub_str);
+		// printf("%s|\n", sub_str); REMOVE
 		stack_item = stack_new(atoi_check(sub_str));
 		if (!stack_item || stack_item_duplicate(&stack, &stack_item))
 		{
@@ -89,7 +105,7 @@ t_stack	*build_stack(char *string)
 		}
 		stack_add_back(&stack, stack_item);
 		index += (ft_strlen(sub_str));
-		printf("index: %d\n", index);
+		// printf("index: %d\n", index); REMOVE
 	}
 	return (stack);
 }

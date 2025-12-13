@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 19:37:44 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/12 20:31:10 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/13 17:02:48 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,19 @@ void	swap_both(void)
 	//swap_b();
 }
 
-void	push_b_to_a(void)
+void	push(t_stack **src, t_stack **dest)
 {
+	t_stack *temp;
+	if (!src || !*src || !dest)
+		return ;
+	temp = *src;
+	*src = temp->next;
+	temp->next = *dest;
+	*dest = temp;
+
 	// pa (push a): Take the first element at the top of b and put it at the top of a.
 	// Do nothing if b is empty.
-}
 
-void	push_a_to_b(void)
-{
 	// pb (push b): Take the first element at the top of a and put it at the top of b.
 	// Do nothing if a is empty.
 }
