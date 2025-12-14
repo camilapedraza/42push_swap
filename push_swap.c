@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/14 13:20:52 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/14 20:43:39 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,190 @@
 
 #include "push_swap.h"
 
-void ft_putstr_fd(char *s, int fd)
+void	ft_putstr_fd(char *s, int fd)
 {
 	while (*s)
 		write(fd, s++, 1);
 }
 
-void quit_push_swap(void)
+void	quit_push_swap(void)
 {
 	ft_putstr_fd("Error\n", 2);
 	exit(EXIT_FAILURE);
 }
 
+// Could put this in build_stack.c and rename to build_stacks.c
 
+size_t	factorial(size_t stack_size)
+{
+	if (stack_size <= 1)
+		return (1);
+	return (stack_size * factorial(stack_size - 1));
+}
+
+int	is_sorted(t_stack *stack)
+{
+
+	if (!stack || !stack->next)
+		return (1);
+
+	while (stack->next)
+	{
+		if (stack->value > stack->next->value)
+			return (0);
+		stack = stack->next;
+	}
+	return (1);
+}
+
+void find_limits(t_stack *stack)
+{
+	int b_max;
+	int b_min;
+
+	if (stack->value > stack->next->value)
+	{
+		b_max = stack->value;
+		b_min = stack->next->value;
+	}
+	else
+	{
+		b_min = stack->value;
+		b_max = stack->next->value;
+	}
+}
+
+t_stack	*find_target(int n, t_stack *stack)
+{
+	t_stack *temp;
+	t_stack *target;
+	int		max;
+
+	// NULL checks here
+	temp = stack;
+	target = NULL;
+	max = stack->value;
+
+	// find next smaller number
+	while (temp)
+	{
+		if (temp->value < n && temp->value >= max)
+		{
+			target = temp;
+			max = temp->value;
+		}
+		temp = temp->next;
+	}
+	// what if no smaller number? FIX THIS
+	return (target);
+}
+
+size_t	find_node_position(int n, t_stack *stack)
+{
+	size_t	position;
+
+	position = 0;
+	while (stack->value != n)
+	{
+		stack = stack->next;
+		position += 1;
+	}
+	return (position);
+}
+
+int move_cost(int s, t_stack *src, int d, t_stack *dest)
+{
+	size_t	s_cost;
+	size_t	d_cost;
+	size_t	size;
+
+	// NULL checks here
+	// what type of struct should move_cost return?
+	s_cost = find_node_position(s, src);
+	size = stack_size(src);
+	if (s_cost > size/2)
+		s_cost = size - s_cost;	
+	d_cost = find_node_position(d, dest);
+	size = stack_size(dest);
+	if (d_cost > size / 2)
+		d_cost = size - d_cost;
+	// should I calculate R and RR costs separately and then try to find common ground?
+	// IF d_pos is last node in dest stack, it's a no-cost move (same as if first node)
+	// This return is for testing only!!!
+	return (s_cost + d_cost);
+}
+
+void sort_stacks(t_stack **a_stack, t_stack **b_stack)
+{
+	t_stack	*target;
+	size_t	cost;
+	t_stack	*temp;
+
+	temp = *a_stack;
+	while (temp)
+	{
+		target = find_target(temp->value, *b_stack);
+		
+		if (target)
+		{
+			cost = move_cost(temp->value, *a_stack, target->value, *b_stack);
+			printf("target for %d is %d, cost is %zu\n", temp->value, target->value, cost);
+		}
+		/*
+		else
+			printf("target for %d is NONE\n", temp->value);*/
+		// if A node has target
+		// calculate A node position and cost
+		// calculate target position and cost
+		// -- if cost == 0, move immediately, start cycle again
+		// else, if no candidate yet, save as candidate
+		// else, if cost smaller than current candidate, replace as candidate
+		// else, if cost higher than candidate, ignore and move to next A node
+		temp = temp->next;
+	}
+
+
+	// WHAT TO DO?
+	// FIND B min and max (or update)?
+	// Calculate for each number in A the cost of moving to B:
+	// -- Cost of bringing it to top of A:
+	// ---- ra if position is less than half len of A
+	// ---- rra if position is more than half len of A
+	// -- Cost of bringing target number to top of B 
+	// ---- same calculations as A
+	// Add up costs (including simultaneous moves for both stacks)
+	// Execute instructions for cheapest (first one found)
+	// Rinse / repeat
+	
+}	
+
+void	init_b_stack(t_stack **a_stack, t_stack **b_stack)
+{
+	//size_t	pushes;
+	//size_t	median;
+
+	//pushes = stack_size(*a_stack) - 2;
+	push(a_stack, b_stack);
+	push(a_stack, b_stack);
+	/*median = a_size / 2;
+	while (median--)
+
+		push(a_stack, b_stack);*/
+	/*
+	rotate(a_stack);
+	a_size = stack_size(*a_stack) - 1;
+	while (a_size--)
+		push(a_stack, b_stack);
+	*/
+}
 
 int	main(int argc, char **argv)
 {
 	t_stack	*a_stack;
 	t_stack	*b_stack;
-	int		a_size;
+	
 	t_stack *temp; // remove
+	//t_stack *temp_b; // remove
 	
 	if (argc < 2)
 		quit_push_swap();
@@ -41,9 +205,10 @@ int	main(int argc, char **argv)
 	// this prepares the input (stack built in order of args) and validates it
 	// we don't get a stack back if anything fails in the process (program is quit)
 	a_stack = parse_input(argc, argv);
-	a_size = stack_size(a_stack);
 	b_stack = NULL;
-	// TO DO: check a_stack exists and how many elements it has (ft_lstsize)
+	init_b_stack(&a_stack, &b_stack);
+	sort_stacks(&a_stack, &b_stack);
+
 	// TO DO: parse stack based on size
 
 	/* The program must display the sequence of instructions needed to sort
@@ -57,7 +222,24 @@ int	main(int argc, char **argv)
 
 	// ------------------------------------------------------------------
 	// tester code from here on
-	printf("stack received - size: %d\n", a_size);
+	// TEST INIT B
+	printf("\n==========================\n");
+	printf("A stack\n");
+	temp = a_stack;
+	while (temp)
+	{
+		printf("%d\n", temp->value);
+		temp = temp->next;
+	}
+	printf("B stack\n");
+	temp = b_stack;
+	while (temp)
+	{
+		printf("%d\n", temp->value);
+		temp = temp->next;
+	}
+
+	/*
 	// TEST SWAP A
 	swap(&a_stack);
 	printf("swap!\n");
@@ -118,6 +300,7 @@ int	main(int argc, char **argv)
 	rotate(&b_stack);
 	reverse_rotate(&b_stack);
 	printf("still alive!\n");
+	*/
 	return (0);
 }
 

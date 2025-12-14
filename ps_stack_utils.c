@@ -6,15 +6,15 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:03:50 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/13 18:42:59 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/14 15:48:27 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int stack_size(t_stack *stack)
+size_t stack_size(t_stack *stack)
 {
-	int		count;
+	size_t	count;
 	t_stack *temp;
 
 	if (!stack)
