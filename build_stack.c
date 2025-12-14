@@ -6,13 +6,13 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 18:20:02 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/13 16:57:54 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/14 13:19:47 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int stack_item_duplicate(t_stack **stack, t_stack **item)
+static int stack_item_duplicate(t_stack **stack, t_stack **item)
 {
 	t_stack *temp;
 
@@ -28,7 +28,7 @@ int stack_item_duplicate(t_stack **stack, t_stack **item)
 	return (0);
 }
 
-int	atoi_check(const char *nptr)
+static int	atoi_check(const char *nptr)
 {
 	long val;
 	long n;
@@ -54,15 +54,12 @@ int	atoi_check(const char *nptr)
 	return (n * val);
 }
 
-char	*extract_argument(const char *list, unsigned int start)
+static char	*extract_argument(const char *list, unsigned int start)
 {
 	int		end;
 	int 	digits;
 	char	*sub_str;
 
-	// Check if EDGE CASE: no list?
-	// Check if EDGE CASE: start beyond string?
-	// I should not be sending empty strings, null strings, etc!
 	end = start;
 	digits = 0;
 	while (is_space(list[end]))

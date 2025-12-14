@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/13 18:51:39 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/14 13:20:52 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void quit_push_swap(void)
 	ft_putstr_fd("Error\n", 2);
 	exit(EXIT_FAILURE);
 }
+
+
 
 int	main(int argc, char **argv)
 {
@@ -115,6 +117,7 @@ int	main(int argc, char **argv)
 	push(&b_stack, &a_stack);
 	rotate(&b_stack);
 	reverse_rotate(&b_stack);
+	printf("still alive!\n");
 	return (0);
 }
 
