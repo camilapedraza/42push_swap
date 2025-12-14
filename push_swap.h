@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:49:36 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/14 13:15:06 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/14 15:53:48 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		is_digit(int c);
 t_stack *stack_new(int value);
 void	stack_add_back(t_stack **stack, t_stack *new);
 void	stack_free(t_stack **stack);
-int		stack_size(t_stack *stack);
+size_t	stack_size(t_stack *stack);
 t_stack	*stack_reverse_find(t_stack *stack, int item);
 t_stack	*build_stack(char *string);
 void	ft_putstr_fd(char *s, int fd);

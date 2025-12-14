@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 14:50:59 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/14 13:10:46 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/14 20:32:34 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_stack *parse_input(int n, char **argv)
 			string = join_arguments(string, " ");
 		index++;
 	}
-	printf("parsed string: %s\n", string);
+	// printf("parsed string: %s\n", string);
 	a_stack = build_stack(string);
 	// I could free this string if I don't need it anymore
 	return (a_stack);
