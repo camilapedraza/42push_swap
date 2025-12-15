@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/14 20:43:39 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/15 12:36:33 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,57 +105,121 @@ size_t	find_node_position(int n, t_stack *stack)
 	return (position);
 }
 
-int move_cost(int s, t_stack *src, int d, t_stack *dest)
+typedef struct s_moveset
 {
+	size_t	cost;
 	size_t	s_cost;
+	int		s_rdir;
 	size_t	d_cost;
-	size_t	size;
+	int		d_rdir;
+} t_moveset;
+
+void	init_moveset(t_moveset *moves)
+{
+	moves->cost = 0;
+	moves->s_cost = 0;
+	moves->s_rdir = 1;
+	moves->d_cost = 0;
+	moves->d_rdir = 1;
+}
+
+t_moveset find_move_cost(int s, t_stack *src, int d, t_stack *dest)
+{
+	size_t		size;
+	t_moveset	moves;
 
 	// NULL checks here
 	// what type of struct should move_cost return?
-	s_cost = find_node_position(s, src);
+	moves.s_cost = find_node_position(s, src);
 	size = stack_size(src);
-	if (s_cost > size/2)
-		s_cost = size - s_cost;	
-	d_cost = find_node_position(d, dest);
+	if (moves.s_cost > size/2)
+	{
+		moves.s_cost = size - moves.s_cost;
+		moves.s_rdir = -1;
+	}
+	moves.d_cost = find_node_position(d, dest);
 	size = stack_size(dest);
-	if (d_cost > size / 2)
-		d_cost = size - d_cost;
-	// should I calculate R and RR costs separately and then try to find common ground?
 	// IF d_pos is last node in dest stack, it's a no-cost move (same as if first node)
+	// add condition here to make moves.d_cost = 0
+	if (moves.d_cost > size / 2)
+	{
+		moves.d_cost = size - moves.d_cost;
+		moves.s_rdir = -1;
+	}
+	moves.cost = moves.s_cost + moves.d_cost;
+	// should I calculate R and RR costs separately and then try to find common ground?
+	// what is it seems they need to move in opposite directions but actually
+	// can be less costly to do synchronous moves first, then finish off with single moves
+	// even if it goes against the assumption of less costly move?
+	
 	// This return is for testing only!!!
-	return (s_cost + d_cost);
+	return (moves);
 }
 
 void sort_stacks(t_stack **a_stack, t_stack **b_stack)
 {
-	t_stack	*target;
-	size_t	cost;
-	t_stack	*temp;
+	t_stack		*temp;
+	t_stack		*target;
+	t_moveset	temp_moves;
+	t_stack		*best;
+	t_moveset	best_moves;
 
 	temp = *a_stack;
+	best = NULL;
+	init_moveset(&best_moves);
 	while (temp)
 	{
 		target = find_target(temp->value, *b_stack);
 		
 		if (target)
 		{
-			cost = move_cost(temp->value, *a_stack, target->value, *b_stack);
-			printf("target for %d is %d, cost is %zu\n", temp->value, target->value, cost);
+			temp_moves = find_move_cost(temp->value, *a_stack, target->value, *b_stack);
+			printf("target for %d is %d, cost is %zu\n", temp->value, target->value, temp_moves.cost);
+			if (temp_moves.cost == 0)
+			{
+				best = temp;
+				best_moves = temp_moves;
+				break ;
+			}
+			else
+			{
+				if (!best || (best && (best_moves.cost > temp_moves.cost)))
+					{
+						best = temp;
+						best_moves = temp_moves;
+					}
+			}		
 		}
-		/*
-		else
-			printf("target for %d is NONE\n", temp->value);*/
-		// if A node has target
-		// calculate A node position and cost
-		// calculate target position and cost
-		// -- if cost == 0, move immediately, start cycle again
-		// else, if no candidate yet, save as candidate
-		// else, if cost smaller than current candidate, replace as candidate
-		// else, if cost higher than candidate, ignore and move to next A node
 		temp = temp->next;
 	}
+	printf("Best candidate is %d - target is %d, cost is %zu\n", temp->value, target->value, temp_moves.cost);
+	/////////
+	// START MOVING THINGS HERE
+	// B_STACK ROTATION
+	if (best_moves.d_cost && best_moves.d_rdir == 1)
+		while (best_moves.d_cost--)
+			rotate(b_stack);
+	if (best_moves.d_cost && best_moves.d_rdir == -1)
+		while (best_moves.d_cost--)
+			reverse_rotate(b_stack);
+	// A_STACK ROTATION
+	if (best_moves.s_cost && best_moves.s_rdir == 1)
+		while (best_moves.s_cost--)
+			rotate(a_stack);
+	if (best_moves.s_cost && best_moves.s_rdir == -1)
+		while (best_moves.s_cost--)
+			reverse_rotate(a_stack);
+	// PUSH A TO B AFTER ROTATION
+	push(a_stack, b_stack);
 
+	// if A node has target
+	// calculate A node position and cost
+	// calculate target position and cost
+	// -- if cost == 0, move immediately, start cycle again
+	// else, if no candidate yet, save as candidate, save moves
+	// else, if cost smaller than current candidate, replace as candidate, replace moves
+	// else, if cost higher than candidate, ignore and move to next A node
+	temp = temp->next;
 
 	// WHAT TO DO?
 	// FIND B min and max (or update)?
@@ -168,7 +232,6 @@ void sort_stacks(t_stack **a_stack, t_stack **b_stack)
 	// Add up costs (including simultaneous moves for both stacks)
 	// Execute instructions for cheapest (first one found)
 	// Rinse / repeat
-	
 }	
 
 void	init_b_stack(t_stack **a_stack, t_stack **b_stack)
