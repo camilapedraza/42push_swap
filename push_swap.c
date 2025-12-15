@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/15 12:36:33 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/15 13:54:19 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,14 @@ t_stack	*find_target(int n, t_stack *stack)
 	t_stack *target;
 	int		max;
 
-	// NULL checks here
+	write(1, "find_target\n", 12);
+	if (!stack)
+		return (NULL);
+	if (!stack->next)
+		return (stack);
 	temp = stack;
 	target = NULL;
 	max = stack->value;
-
 	// find next smaller number
 	while (temp)
 	{
@@ -88,7 +91,20 @@ t_stack	*find_target(int n, t_stack *stack)
 		}
 		temp = temp->next;
 	}
-	// what if no smaller number? FIX THIS
+	if (!target)
+	{
+		temp = stack;
+		while (temp)
+		{
+			// THIS NEEDS TO BE FIXED! What is the actual best target here!?!?!
+			if (temp->value > n && temp->value <= max)
+			{
+				target = temp;
+				max = temp->value;
+			}
+			temp = temp->next;
+		}
+	}
 	return (target);
 }
 
@@ -167,11 +183,12 @@ void sort_stacks(t_stack **a_stack, t_stack **b_stack)
 	temp = *a_stack;
 	best = NULL;
 	init_moveset(&best_moves);
+	write(1, "sort_stacks\n", 12);
 	while (temp)
 	{
 		target = find_target(temp->value, *b_stack);
-		
-		if (target)
+		write(1, "target found\n", 14);
+		if (target != NULL)
 		{
 			temp_moves = find_move_cost(temp->value, *a_stack, target->value, *b_stack);
 			printf("target for %d is %d, cost is %zu\n", temp->value, target->value, temp_moves.cost);
@@ -192,7 +209,8 @@ void sort_stacks(t_stack **a_stack, t_stack **b_stack)
 		}
 		temp = temp->next;
 	}
-	printf("Best candidate is %d - target is %d, cost is %zu\n", temp->value, target->value, temp_moves.cost);
+	printf("Best candidate is %d - target is %d, cost is %zu\n", best->value, target->value, best_moves.cost);
+	/*
 	/////////
 	// START MOVING THINGS HERE
 	// B_STACK ROTATION
@@ -211,7 +229,7 @@ void sort_stacks(t_stack **a_stack, t_stack **b_stack)
 			reverse_rotate(a_stack);
 	// PUSH A TO B AFTER ROTATION
 	push(a_stack, b_stack);
-
+	*/
 	// if A node has target
 	// calculate A node position and cost
 	// calculate target position and cost
@@ -219,7 +237,6 @@ void sort_stacks(t_stack **a_stack, t_stack **b_stack)
 	// else, if no candidate yet, save as candidate, save moves
 	// else, if cost smaller than current candidate, replace as candidate, replace moves
 	// else, if cost higher than candidate, ignore and move to next A node
-	temp = temp->next;
 
 	// WHAT TO DO?
 	// FIND B min and max (or update)?
@@ -232,6 +249,7 @@ void sort_stacks(t_stack **a_stack, t_stack **b_stack)
 	// Add up costs (including simultaneous moves for both stacks)
 	// Execute instructions for cheapest (first one found)
 	// Rinse / repeat
+
 }	
 
 void	init_b_stack(t_stack **a_stack, t_stack **b_stack)
@@ -271,7 +289,6 @@ int	main(int argc, char **argv)
 	b_stack = NULL;
 	init_b_stack(&a_stack, &b_stack);
 	sort_stacks(&a_stack, &b_stack);
-
 	// TO DO: parse stack based on size
 
 	/* The program must display the sequence of instructions needed to sort
@@ -301,6 +318,7 @@ int	main(int argc, char **argv)
 		printf("%d\n", temp->value);
 		temp = temp->next;
 	}
+
 
 	/*
 	// TEST SWAP A
