@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 14:50:59 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/15 13:21:48 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/16 18:05:26 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ t_stack *parse_input(int n, char **argv)
 	t_stack *a_stack;
 
 	length = count_chars(n, argv);
-	printf("%d", length);
 	string = ft_calloc(sizeof(char), (length + n - 1));
 	if (string == NULL)
 		quit_push_swap();
@@ -72,7 +71,7 @@ t_stack *parse_input(int n, char **argv)
 			string = join_arguments(string, " ");
 		index++;
 	}
-	// printf("parsed string: %s\n", string);
+	//printf("parsed string: %s\n", string);
 	a_stack = build_stack(string);
 	// I could free this string if I don't need it anymore
 	return (a_stack);
