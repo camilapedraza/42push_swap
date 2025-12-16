@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/15 13:54:19 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/16 19:03:17 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,24 +71,18 @@ t_stack	*find_target(int n, t_stack *stack)
 {
 	t_stack *temp;
 	t_stack *target;
-	int		max;
 
-	write(1, "find_target\n", 12);
 	if (!stack)
 		return (NULL);
 	if (!stack->next)
 		return (stack);
 	temp = stack;
 	target = NULL;
-	max = stack->value;
-	// find next smaller number
 	while (temp)
 	{
-		if (temp->value < n && temp->value >= max)
-		{
-			target = temp;
-			max = temp->value;
-		}
+		if (temp->value < n)
+			if (!target || temp->value > target->value)
+				target = temp;
 		temp = temp->next;
 	}
 	if (!target)
@@ -96,12 +90,10 @@ t_stack	*find_target(int n, t_stack *stack)
 		temp = stack;
 		while (temp)
 		{
-			// THIS NEEDS TO BE FIXED! What is the actual best target here!?!?!
-			if (temp->value > n && temp->value <= max)
-			{
+			if (!target && temp->value > n)
 				target = temp;
-				max = temp->value;
-			}
+			else if (target && (temp->value > target->value))
+			 	target = temp;
 			temp = temp->next;
 		}
 	}
@@ -146,6 +138,7 @@ t_moveset find_move_cost(int s, t_stack *src, int d, t_stack *dest)
 
 	// NULL checks here
 	// what type of struct should move_cost return?
+	init_moveset(&moves);
 	moves.s_cost = find_node_position(s, src);
 	size = stack_size(src);
 	if (moves.s_cost > size/2)
@@ -160,7 +153,7 @@ t_moveset find_move_cost(int s, t_stack *src, int d, t_stack *dest)
 	if (moves.d_cost > size / 2)
 	{
 		moves.d_cost = size - moves.d_cost;
-		moves.s_rdir = -1;
+		moves.d_rdir = -1;
 	}
 	moves.cost = moves.s_cost + moves.d_cost;
 	// should I calculate R and RR costs separately and then try to find common ground?
@@ -182,20 +175,22 @@ void sort_stacks(t_stack **a_stack, t_stack **b_stack)
 
 	temp = *a_stack;
 	best = NULL;
+	init_moveset(&temp_moves);
 	init_moveset(&best_moves);
-	write(1, "sort_stacks\n", 12);
+
 	while (temp)
 	{
 		target = find_target(temp->value, *b_stack);
-		write(1, "target found\n", 14);
-		if (target != NULL)
+		if (target)
 		{
 			temp_moves = find_move_cost(temp->value, *a_stack, target->value, *b_stack);
+			printf("\nTEMP %zu, %zu, %d, %zu, %d\n", temp_moves.cost, temp_moves.s_cost, temp_moves.s_rdir, temp_moves.d_cost, temp_moves.d_rdir);
 			printf("target for %d is %d, cost is %zu\n", temp->value, target->value, temp_moves.cost);
 			if (temp_moves.cost == 0)
 			{
 				best = temp;
 				best_moves = temp_moves;
+				printf("IF %zu, %zu, %d, %zu, %d\n", best_moves.cost, best_moves.s_cost, best_moves.s_rdir, best_moves.d_cost, best_moves.d_rdir);
 				break ;
 			}
 			else
@@ -204,16 +199,19 @@ void sort_stacks(t_stack **a_stack, t_stack **b_stack)
 					{
 						best = temp;
 						best_moves = temp_moves;
+						printf("ELSE %zu, %zu, %d, %zu, %d\n", best_moves.cost, best_moves.s_cost, best_moves.s_rdir, best_moves.d_cost, best_moves.d_rdir);
 					}
 			}		
 		}
 		temp = temp->next;
 	}
-	printf("Best candidate is %d - target is %d, cost is %zu\n", best->value, target->value, best_moves.cost);
-	/*
+	printf("Best candidate is %d\n", best->value);
+	printf("Total Cost: %zu\nMove B %zu times %d\nMove A %zu times %d\n", best_moves.cost, best_moves.d_cost, best_moves.d_rdir, best_moves.s_cost, best_moves.s_rdir);
+
 	/////////
 	// START MOVING THINGS HERE
 	// B_STACK ROTATION
+	/*
 	if (best_moves.d_cost && best_moves.d_rdir == 1)
 		while (best_moves.d_cost--)
 			rotate(b_stack);
@@ -258,6 +256,9 @@ void	init_b_stack(t_stack **a_stack, t_stack **b_stack)
 	//size_t	median;
 
 	//pushes = stack_size(*a_stack) - 2;
+	push(a_stack, b_stack);
+	push(a_stack, b_stack);
+	push(a_stack, b_stack);
 	push(a_stack, b_stack);
 	push(a_stack, b_stack);
 	/*median = a_size / 2;
