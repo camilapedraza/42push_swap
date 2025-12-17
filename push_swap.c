@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/17 19:16:44 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/17 21:00:44 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,6 @@ void	quit_push_swap(void)
 	exit(EXIT_FAILURE);
 }
 
-// Could put this in build_stack.c and rename to build_stacks.c
-
-/*
-size_t	factorial(size_t stack_size)
-{
-	if (stack_size <= 1)
-		return (1);
-	return (stack_size * factorial(stack_size - 1));
-}
-*/
-
 int	is_sorted(t_stack *stack)
 {
 
@@ -51,25 +40,6 @@ int	is_sorted(t_stack *stack)
 	}
 	return (1);
 }
-
-/*
-void find_limits(t_stack *stack)
-{
-	int b_max;
-	int b_min;
-
-	if (stack->value > stack->next->value)
-	{
-		b_max = stack->value;
-		b_min = stack->next->value;
-	}
-	else
-	{
-		b_min = stack->value;
-		b_max = stack->next->value;
-	}
-}
-*/
 
 t_stack	*find_max(int n, t_stack *stack)
 {
@@ -142,7 +112,7 @@ t_moveset find_move_cost(int s, t_stack *src, int d, t_stack *dest)
 	{
 		moves.s_cost = find_node_position(s, src);
 		size = stack_size(src);
-		if (moves.s_cost > size/2)
+		if (moves.s_cost > (size - 1) / 2)
 		{
 			moves.s_cost = size - moves.s_cost;
 			moves.s_rdir = -1;
@@ -152,7 +122,7 @@ t_moveset find_move_cost(int s, t_stack *src, int d, t_stack *dest)
 	{
 		moves.d_cost = find_node_position(d, dest);
 		size = stack_size(dest);
-		if (moves.d_cost > size / 2)
+		if (moves.d_cost > (size - 1) / 2)
 		{
 			moves.d_cost = size - moves.d_cost;
 			moves.d_rdir = -1;
@@ -164,31 +134,11 @@ t_moveset find_move_cost(int s, t_stack *src, int d, t_stack *dest)
 
 void	execute_rotations(t_stack **src, t_stack **dest, t_moveset moves)
 {
-	// TODO DETERMINE IF RR or RRR can be done
-	// DEST STACK ROTATION
-	// TODO PRINT MOVES
-	if (moves.d_cost && moves.d_rdir == 1)
-		while (moves.d_cost--)
-			rotate(dest);
-	else if (moves.d_cost && moves.d_rdir == -1)
-		while (moves.d_cost--)
-			reverse_rotate(dest);
-	// SRC STACK ROTATION
-	if (moves.s_cost && moves.s_rdir == 1)
-		while (moves.s_cost--)
-			rotate(src);
-	else if (moves.s_cost && moves.s_rdir == -1)
-		while (moves.s_cost--)
-			reverse_rotate(src);
-}
-
-void	execute_rotations_v2(t_stack **src, t_stack **dest, t_moveset moves)
-{
 	if (moves.d_cost > 0 && moves.s_cost > 0 && moves.d_rdir == moves.s_rdir)
 	{
 		if (moves.d_cost >= moves.s_cost)
 		{
-			while (moves.s_cost > 0)
+			while (moves.s_cost)
 			{
 				if (moves.s_rdir == 1)
 				{
@@ -205,7 +155,7 @@ void	execute_rotations_v2(t_stack **src, t_stack **dest, t_moveset moves)
 			}
 		}
 		if (moves.d_cost < moves.s_cost)
-			while (moves.d_cost > 0)
+			while (moves.d_cost)
 			{
 				if (moves.d_rdir == 1)
 				{
@@ -265,7 +215,6 @@ void	sort_b_stack(t_stack **a_stack, t_stack **b_stack)
 	t_moveset	best_moves;
 	size_t		items;
 	
-	// NULL CHECKS HERE !!!
 	init_moveset(&temp_moves);
 	items = stack_size(*a_stack);
 	while (items--)
@@ -294,27 +243,12 @@ void	sort_b_stack(t_stack **a_stack, t_stack **b_stack)
 				break ;
 			temp = temp->next;
 		}
-		/////////
-		// START MOVING THINGS HERE
-		// B_STACK ROTATION
-		// TODO: CALL RIGHT FUNCTION HERE INSTEAD
-		execute_rotations_v2(a_stack, b_stack, best_moves);
+
+		execute_rotations(a_stack, b_stack, best_moves);
 		// PUSH A TO B AFTER ROTATION
 		push(a_stack, b_stack);
 		ft_putstr_fd("pb\n", 1);
 	}
-
-	// WHAT TO DO?
-	// FIND B min and max (or update)?
-	// Calculate for each number in A the cost of moving to B:
-	// -- Cost of bringing it to top of A:
-	// ---- ra if position is less than half len of A
-	// ---- rra if position is more than half len of A
-	// -- Cost of bringing target number to top of B 
-	// ---- same calculations as A
-	// Add up costs (including simultaneous moves for both stacks)
-	// Execute instructions for cheapest (first one found)
-	// Rinse / repeat
 }
 
 void	sort_a_stack(t_stack **a_stack, t_stack **b_stack)
@@ -326,8 +260,8 @@ void	sort_a_stack(t_stack **a_stack, t_stack **b_stack)
 	// NULL CHECKS HERE!!!
 
 	max = ((*find_max((*b_stack)->value, *b_stack)).value);
-	max_to_top = find_move_cost(max, *b_stack, 0, NULL);
-	execute_rotations(b_stack, NULL, max_to_top);
+	max_to_top = find_move_cost(0, NULL, max, *b_stack);
+	execute_rotations(NULL, b_stack, max_to_top);
 	passes = stack_size(*b_stack);
 	while (passes--)
 	{
@@ -353,7 +287,6 @@ int	main(int argc, char **argv)
 	t_stack	*a_stack;
 	t_stack	*b_stack;
 	
-	// t_stack *temp; // remove - for test printing only
 	//t_stack *temp_b; // remove
 	
 	if (argc < 2)
@@ -365,8 +298,8 @@ int	main(int argc, char **argv)
 	init_b_stack(&a_stack, &b_stack);
 	sort_b_stack(&a_stack, &b_stack);
 	sort_a_stack(&a_stack, &b_stack);
-	if (is_sorted(a_stack))
-		ft_putstr_fd("sorted succesfully!\n", 1);
+	//if (is_sorted(a_stack))
+		//ft_putstr_fd("sorted succesfully!\n", 1);
 	// TO DO: parse stack based on size
 
 	/* The program must display the sequence of instructions needed to sort
@@ -382,7 +315,9 @@ int	main(int argc, char **argv)
 	// tester code from here on
 	// TEST INIT B
 	/*
-	printf("\n==========================\n");
+	t_stack *temp;
+
+	printf("\n========== RESULT! =============\n");
 	printf("A stack\n");
 	temp = a_stack;
 	while (temp)
@@ -398,22 +333,6 @@ int	main(int argc, char **argv)
 		temp = temp->next;
 	}
 	*/
-	/*printf("\n========== RESULT! =============\n");
-	printf("A stack\n");
-	temp = a_stack;
-	while (temp)
-	{
-		printf("%d\n", temp->value);
-		temp = temp->next;
-	}
-	printf("B stack\n");
-	temp = b_stack;
-	while (temp)
-	{
-		printf("%d\n", temp->value);
-		temp = temp->next;
-	}*/
-
 	/*
 	// TEST SWAP A
 	swap(&a_stack);
