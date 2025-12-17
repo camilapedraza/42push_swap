@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/17 17:05:26 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/17 19:16:44 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,80 @@ void	execute_rotations(t_stack **src, t_stack **dest, t_moveset moves)
 			reverse_rotate(src);
 }
 
+void	execute_rotations_v2(t_stack **src, t_stack **dest, t_moveset moves)
+{
+	if (moves.d_cost > 0 && moves.s_cost > 0 && moves.d_rdir == moves.s_rdir)
+	{
+		if (moves.d_cost >= moves.s_cost)
+		{
+			while (moves.s_cost > 0)
+			{
+				if (moves.s_rdir == 1)
+				{
+					rotate_both(dest, src);
+					ft_putstr_fd("rr\n", 1);
+				}
+				else if (moves.s_rdir == -1)
+				{
+					reverse_rotate_both(dest, src);
+					ft_putstr_fd("rrr\n", 1);
+				}
+				moves.s_cost--;
+				moves.d_cost--;
+			}
+		}
+		if (moves.d_cost < moves.s_cost)
+			while (moves.d_cost > 0)
+			{
+				if (moves.d_rdir == 1)
+				{
+					rotate_both(dest, src);
+					ft_putstr_fd("rr\n", 1);
+				}
+				else if (moves.d_rdir == -1)
+				{
+					reverse_rotate_both(dest, src);
+					ft_putstr_fd("rrr\n", 1);
+				}
+				moves.d_cost--;
+				moves.s_cost--;
+			}
+	}
+
+	if (moves.d_cost && moves.d_rdir == 1)
+	{
+		while (moves.d_cost--)
+		{
+			rotate(dest);
+			ft_putstr_fd("rb\n", 1);
+		}
+	}
+	else if (moves.d_cost && moves.d_rdir == -1)
+	{
+		while (moves.d_cost--)
+		{
+			reverse_rotate(dest);
+			ft_putstr_fd("rrb\n", 1);
+		}
+	}
+	if (moves.s_cost && moves.s_rdir == 1)
+	{
+		while (moves.s_cost--)
+		{
+			rotate(src);
+			ft_putstr_fd("ra\n", 1);
+		}
+	}
+	else if (moves.s_cost && moves.s_rdir == -1)
+	{
+		while (moves.s_cost--)
+		{
+			reverse_rotate(src);
+			ft_putstr_fd("rra\n", 1);
+		}
+	}
+}
+
 void	sort_b_stack(t_stack **a_stack, t_stack **b_stack)
 {
 	t_stack		*temp;
@@ -189,20 +263,18 @@ void	sort_b_stack(t_stack **a_stack, t_stack **b_stack)
 	t_moveset	temp_moves;
 	t_stack		*best;
 	t_moveset	best_moves;
-	size_t		pushes;
+	size_t		items;
 	
 	// NULL CHECKS HERE !!!
 	init_moveset(&temp_moves);
-	init_moveset(&best_moves);
-	pushes = stack_size(*a_stack);
-	while (pushes--)
+	items = stack_size(*a_stack);
+	while (items--)
 	{
 		temp = *a_stack;
 		best = NULL;
 		while (temp)
 		{
 			target = find_target(temp->value, *b_stack);
-			// TODO determine what to do if target == NULL (no b stack found). Probably free and exit!
 			if (target)
 			{
 				temp_moves = find_move_cost(temp->value, *a_stack, target->value, *b_stack);
@@ -218,95 +290,19 @@ void	sort_b_stack(t_stack **a_stack, t_stack **b_stack)
 					best_moves = temp_moves;
 				}
 			}
+			else
+				break ;
 			temp = temp->next;
 		}
 		/////////
 		// START MOVING THINGS HERE
 		// B_STACK ROTATION
 		// TODO: CALL RIGHT FUNCTION HERE INSTEAD
-		if (best_moves.d_cost > 0 && best_moves.s_cost > 0 && best_moves.d_rdir == best_moves.s_rdir)
-		{
-			if (best_moves.d_cost >= best_moves.s_cost)
-			{
-				while (best_moves.s_cost > 0)
-				{
-					if (best_moves.s_rdir == 1)
-					{
-						rotate_both(b_stack, a_stack);
-						ft_putstr_fd("rr\n", 1);
-					}
-					else if (best_moves.s_rdir == -1)
-					{
-						reverse_rotate_both(b_stack, a_stack);
-						ft_putstr_fd("rrr\n", 1);
-					}
-					best_moves.s_cost--;
-					best_moves.d_cost--;
-				}
-			}
-			if (best_moves.d_cost < best_moves.s_cost)
-				while (best_moves.d_cost > 0)
-				{
-					if (best_moves.d_rdir == 1)
-					{
-						rotate_both(b_stack, a_stack);
-						ft_putstr_fd("rr\n", 1);
-					}
-					else if (best_moves.d_rdir == -1)
-					{
-						reverse_rotate_both(b_stack, a_stack);
-						ft_putstr_fd("rrr\n", 1);
-					}
-					best_moves.d_cost--;
-					best_moves.s_cost--;
-				}
-		}
-		
-		if (best_moves.d_cost && best_moves.d_rdir == 1)
-		{
-			while (best_moves.d_cost--)
-			{
-				rotate(b_stack);
-				ft_putstr_fd("rb\n", 1);
-			}
-		}
-		else if (best_moves.d_cost && best_moves.d_rdir == -1)
-		{
-			while (best_moves.d_cost--)
-			{
-				reverse_rotate(b_stack);
-				ft_putstr_fd("rrb\n", 1);
-			}
-		}
-		if (best_moves.s_cost && best_moves.s_rdir == 1)
-		{
-			while (best_moves.s_cost--)
-			{
-				rotate(a_stack);
-				ft_putstr_fd("ra\n", 1);
-			}
-		}
-		else if (best_moves.s_cost && best_moves.s_rdir == -1)
-		{
-			while (best_moves.s_cost--)
-			{
-				reverse_rotate(a_stack);
-				ft_putstr_fd("rra\n", 1);
-			}
-		}
+		execute_rotations_v2(a_stack, b_stack, best_moves);
 		// PUSH A TO B AFTER ROTATION
 		push(a_stack, b_stack);
 		ft_putstr_fd("pb\n", 1);
 	}
-		
-	
-	// if A node has target
-	// calculate A node position and cost
-	// calculate target position and cost
-	// -- if cost == 0, move immediately, start cycle again
-	// else, if no candidate yet, save as candidate, save moves
-	// else, if cost smaller than current candidate, replace as candidate, replace moves
-	// else, if cost higher than candidate, ignore and move to next A node
 
 	// WHAT TO DO?
 	// FIND B min and max (or update)?
