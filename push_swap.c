@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/17 12:41:17 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/17 17:05:26 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@ void	quit_push_swap(void)
 
 // Could put this in build_stack.c and rename to build_stacks.c
 
+/*
 size_t	factorial(size_t stack_size)
 {
 	if (stack_size <= 1)
 		return (1);
 	return (stack_size * factorial(stack_size - 1));
 }
+*/
 
 int	is_sorted(t_stack *stack)
 {
@@ -50,6 +52,7 @@ int	is_sorted(t_stack *stack)
 	return (1);
 }
 
+/*
 void find_limits(t_stack *stack)
 {
 	int b_max;
@@ -65,6 +68,23 @@ void find_limits(t_stack *stack)
 		b_min = stack->value;
 		b_max = stack->next->value;
 	}
+}
+*/
+
+t_stack	*find_max(int n, t_stack *stack)
+{
+	t_stack *temp;
+	t_stack *max;
+
+	temp = stack;
+	max = stack;
+	while (temp)
+	{
+		if (temp->value > n && temp->value > max->value)
+			max = temp;
+		temp = temp->next;
+	}
+	return (max);
 }
 
 t_stack	*find_target(int n, t_stack *stack)
@@ -86,17 +106,7 @@ t_stack	*find_target(int n, t_stack *stack)
 		temp = temp->next;
 	}
 	if (!target)
-	{
-		temp = stack;
-		while (temp)
-		{
-			if (!target && temp->value > n)
-				target = temp;
-			else if (target && (temp->value > target->value))
-			 	target = temp;
-			temp = temp->next;
-		}
-	}
+		target = find_max(n, stack);
 	return (target);
 }
 
@@ -113,15 +123,6 @@ size_t	find_node_position(int n, t_stack *stack)
 	return (position);
 }
 
-typedef struct s_moveset
-{
-	size_t	cost;
-	size_t	s_cost;
-	int		s_rdir;
-	size_t	d_cost;
-	int		d_rdir;
-} t_moveset;
-
 void	init_moveset(t_moveset *moves)
 {
 	moves->cost = 0;
@@ -135,8 +136,6 @@ t_moveset find_move_cost(int s, t_stack *src, int d, t_stack *dest)
 {
 	size_t		size;
 	t_moveset	moves;
-
-	// NULL checks here
 
 	init_moveset(&moves);
 	if (src)
@@ -153,37 +152,32 @@ t_moveset find_move_cost(int s, t_stack *src, int d, t_stack *dest)
 	{
 		moves.d_cost = find_node_position(d, dest);
 		size = stack_size(dest);
-		// IF d_pos is last node in dest stack, it's a no-cost move (same as if first node)
-		// add condition here to make moves.d_cost = 0
 		if (moves.d_cost > size / 2)
 		{
 			moves.d_cost = size - moves.d_cost;
 			moves.d_rdir = -1;
 		}
-		moves.cost = moves.s_cost + moves.d_cost;
 	}
-	// should I calculate R and RR costs separately and then try to find common ground?
-	// what is it seems they need to move in opposite directions but actually
-	// can be less costly to do synchronous moves first, then finish off with single moves
-	// even if it goes against the assumption of less costly move?
-	// HANDLE A RETURN WITH 0 values N ALL FUNCS THAT CALL THIS FUNC!!
+	moves.cost = moves.s_cost + moves.d_cost;
 	return (moves);
 }
 
 void	execute_rotations(t_stack **src, t_stack **dest, t_moveset moves)
 {
+	// TODO DETERMINE IF RR or RRR can be done
 	// DEST STACK ROTATION
+	// TODO PRINT MOVES
 	if (moves.d_cost && moves.d_rdir == 1)
 		while (moves.d_cost--)
 			rotate(dest);
-	if (moves.d_cost && moves.d_rdir == -1)
+	else if (moves.d_cost && moves.d_rdir == -1)
 		while (moves.d_cost--)
 			reverse_rotate(dest);
 	// SRC STACK ROTATION
 	if (moves.s_cost && moves.s_rdir == 1)
 		while (moves.s_cost--)
 			rotate(src);
-	if (moves.s_cost && moves.s_rdir == -1)
+	else if (moves.s_cost && moves.s_rdir == -1)
 		while (moves.s_cost--)
 			reverse_rotate(src);
 }
@@ -201,61 +195,108 @@ void	sort_b_stack(t_stack **a_stack, t_stack **b_stack)
 	init_moveset(&temp_moves);
 	init_moveset(&best_moves);
 	pushes = stack_size(*a_stack);
-	temp = *a_stack;
-	while (temp && pushes--)
+	while (pushes--)
 	{
+		temp = *a_stack;
 		best = NULL;
 		while (temp)
 		{
 			target = find_target(temp->value, *b_stack);
-			// determine what to do if target == NULL (no b stack found). Probably free and exit!
+			// TODO determine what to do if target == NULL (no b stack found). Probably free and exit!
 			if (target)
 			{
 				temp_moves = find_move_cost(temp->value, *a_stack, target->value, *b_stack);
-				//printf("\nTEMP %zu, %zu, %d, %zu, %d\n", temp_moves.cost, temp_moves.s_cost, temp_moves.s_rdir, temp_moves.d_cost, temp_moves.d_rdir);
-				//printf("target for %d is %d, cost is %zu\n", temp->value, target->value, temp_moves.cost);
 				if (temp_moves.cost == 0)
 				{
 					best = temp;
 					best_moves = temp_moves;
-					//printf("IF %zu, %zu, %d, %zu, %d\n", best_moves.cost, best_moves.s_cost, best_moves.s_rdir, best_moves.d_cost, best_moves.d_rdir);
 					break ;
 				}
-				else
+				else if (!best || (best && (best_moves.cost > temp_moves.cost)))
 				{
-					if (!best || (best && (best_moves.cost > temp_moves.cost)))
-						{
-							best = temp;
-							best_moves = temp_moves;
-							//printf("ELSE %zu, %zu, %d, %zu, %d\n", best_moves.cost, best_moves.s_cost, best_moves.s_rdir, best_moves.d_cost, best_moves.d_rdir);
-						}
-				}		
+					best = temp;
+					best_moves = temp_moves;
+				}
 			}
 			temp = temp->next;
 		}
-		printf("Best candidate is %d\n", best->value);
-		printf("Total Cost: %zu\nMove B %zu times %d\nMove A %zu times %d\n", best_moves.cost, best_moves.d_cost, best_moves.d_rdir, best_moves.s_cost, best_moves.s_rdir);
-
 		/////////
 		// START MOVING THINGS HERE
 		// B_STACK ROTATION
 		// TODO: CALL RIGHT FUNCTION HERE INSTEAD
+		if (best_moves.d_cost > 0 && best_moves.s_cost > 0 && best_moves.d_rdir == best_moves.s_rdir)
+		{
+			if (best_moves.d_cost >= best_moves.s_cost)
+			{
+				while (best_moves.s_cost > 0)
+				{
+					if (best_moves.s_rdir == 1)
+					{
+						rotate_both(b_stack, a_stack);
+						ft_putstr_fd("rr\n", 1);
+					}
+					else if (best_moves.s_rdir == -1)
+					{
+						reverse_rotate_both(b_stack, a_stack);
+						ft_putstr_fd("rrr\n", 1);
+					}
+					best_moves.s_cost--;
+					best_moves.d_cost--;
+				}
+			}
+			if (best_moves.d_cost < best_moves.s_cost)
+				while (best_moves.d_cost > 0)
+				{
+					if (best_moves.d_rdir == 1)
+					{
+						rotate_both(b_stack, a_stack);
+						ft_putstr_fd("rr\n", 1);
+					}
+					else if (best_moves.d_rdir == -1)
+					{
+						reverse_rotate_both(b_stack, a_stack);
+						ft_putstr_fd("rrr\n", 1);
+					}
+					best_moves.d_cost--;
+					best_moves.s_cost--;
+				}
+		}
+		
 		if (best_moves.d_cost && best_moves.d_rdir == 1)
+		{
 			while (best_moves.d_cost--)
+			{
 				rotate(b_stack);
-		if (best_moves.d_cost && best_moves.d_rdir == -1)
+				ft_putstr_fd("rb\n", 1);
+			}
+		}
+		else if (best_moves.d_cost && best_moves.d_rdir == -1)
+		{
 			while (best_moves.d_cost--)
+			{
 				reverse_rotate(b_stack);
-		// A_STACK ROTATION
+				ft_putstr_fd("rrb\n", 1);
+			}
+		}
 		if (best_moves.s_cost && best_moves.s_rdir == 1)
+		{
 			while (best_moves.s_cost--)
+			{
 				rotate(a_stack);
-		if (best_moves.s_cost && best_moves.s_rdir == -1)
+				ft_putstr_fd("ra\n", 1);
+			}
+		}
+		else if (best_moves.s_cost && best_moves.s_rdir == -1)
+		{
 			while (best_moves.s_cost--)
+			{
 				reverse_rotate(a_stack);
+				ft_putstr_fd("rra\n", 1);
+			}
+		}
 		// PUSH A TO B AFTER ROTATION
 		push(a_stack, b_stack);
-		temp = *a_stack;
+		ft_putstr_fd("pb\n", 1);
 	}
 		
 	
@@ -285,47 +326,30 @@ void	sort_a_stack(t_stack **a_stack, t_stack **b_stack)
 	int			max;
 	t_moveset	max_to_top;
 	size_t		passes;
-
-
-	(void) a_stack;
+	
 	// NULL CHECKS HERE!!!
-	// what if not 2?
-	/*
-	if (B_INIT_SIZE == 2)
-	{
-		if ((*a_stack)->value > (*a_stack)->next->value)
-			swap(a_stack);
-	}*/
-	max = ((*find_target((*b_stack)->value, *b_stack)).value);
-	printf("max = %d\n", max);
-	max_to_top = find_move_cost(0, NULL, max, *b_stack);
-	execute_rotations(NULL, b_stack, max_to_top);
+
+	max = ((*find_max((*b_stack)->value, *b_stack)).value);
+	max_to_top = find_move_cost(max, *b_stack, 0, NULL);
+	execute_rotations(b_stack, NULL, max_to_top);
 	passes = stack_size(*b_stack);
 	while (passes--)
+	{
 		push(b_stack, a_stack);
+		ft_putstr_fd("pa\n", 1);
+	}
 }
-
-
 
 void	init_b_stack(t_stack **a_stack, t_stack **b_stack)
 {
 	size_t	pushes;
-	//size_t	median;
 
-	//pushes = stack_size(*a_stack) - 2;
 	pushes = 0;
 	while (pushes++ < B_INIT_SIZE)
+	{
 		push(a_stack, b_stack);
-	/*median = a_size / 2;
-	while (median--)
-
-		push(a_stack, b_stack);*/
-	/*
-	rotate(a_stack);
-	a_size = stack_size(*a_stack) - 1;
-	while (a_size--)
-		push(a_stack, b_stack);
-	*/
+		ft_putstr_fd("pb\n", 1);
+	}
 }
 
 int	main(int argc, char **argv)
@@ -333,27 +357,20 @@ int	main(int argc, char **argv)
 	t_stack	*a_stack;
 	t_stack	*b_stack;
 	
-	t_stack *temp; // remove
+	// t_stack *temp; // remove - for test printing only
 	//t_stack *temp_b; // remove
 	
 	if (argc < 2)
 		quit_push_swap();
-
-	// this prepares the input (stack built in order of args) and validates it
-	// we don't get a stack back if anything fails in the process (program is quit)
 	a_stack = parse_input(argc, argv);
-	printf("A stack\n");
+	if (is_sorted(a_stack))
+		exit(EXIT_SUCCESS);
 	b_stack = NULL;
 	init_b_stack(&a_stack, &b_stack);
 	sort_b_stack(&a_stack, &b_stack);
-	printf("B stack\n");
-	temp = b_stack;
-	while (temp)
-	{
-		printf("%d\n", temp->value);
-		temp = temp->next;
-	}
 	sort_a_stack(&a_stack, &b_stack);
+	if (is_sorted(a_stack))
+		ft_putstr_fd("sorted succesfully!\n", 1);
 	// TO DO: parse stack based on size
 
 	/* The program must display the sequence of instructions needed to sort
@@ -385,7 +402,7 @@ int	main(int argc, char **argv)
 		temp = temp->next;
 	}
 	*/
-	printf("\n========== SORT A STACK! =============\n");
+	/*printf("\n========== RESULT! =============\n");
 	printf("A stack\n");
 	temp = a_stack;
 	while (temp)
@@ -399,7 +416,7 @@ int	main(int argc, char **argv)
 	{
 		printf("%d\n", temp->value);
 		temp = temp->next;
-	}
+	}*/
 
 	/*
 	// TEST SWAP A
