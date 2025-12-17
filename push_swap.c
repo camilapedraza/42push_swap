@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/17 21:00:44 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/17 21:29:59 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,15 +280,30 @@ void	init_b_stack(t_stack **a_stack, t_stack **b_stack)
 		push(a_stack, b_stack);
 		ft_putstr_fd("pb\n", 1);
 	}
+
+	/*
+	I THINK I NEED TO FIND THE ACTUAL MEDIAN WHEN I BUILD A!!!
+	int max;
+	t_stack *target;
+	t_moveset target_to_top;
+
+	while (pushes++ < B_INIT_SIZE)
+	{
+		max = ((*find_max((*a_stack)->value, *a_stack)).value);
+		target = find_target(max / 4, *a_stack);
+		target_to_top = find_move_cost(max, *a_stack, 0, NULL);
+		execute_rotations(a_stack, NULL, target_to_top);
+		push(a_stack, b_stack);
+		ft_putstr_fd("pb\n", 1);
+	}
+	*/
 }
 
 int	main(int argc, char **argv)
 {
 	t_stack	*a_stack;
 	t_stack	*b_stack;
-	
-	//t_stack *temp_b; // remove
-	
+
 	if (argc < 2)
 		quit_push_swap();
 	a_stack = parse_input(argc, argv);
@@ -300,20 +315,9 @@ int	main(int argc, char **argv)
 	sort_a_stack(&a_stack, &b_stack);
 	//if (is_sorted(a_stack))
 		//ft_putstr_fd("sorted succesfully!\n", 1);
-	// TO DO: parse stack based on size
-
-	/* The program must display the sequence of instructions needed to sort
-	tack A in ascending order (in the FEWEST number of operations possible)
-	Instructions must be separated by a ’\n’ and nothing else */
-
-	// DEFINITION OF DONE:
-	// - Stack A is properly sorted
-	// - Stack A is sorted in the fewest number of moves possible (not exceed limits)
-	// - Stack B is empty
 
 	// ------------------------------------------------------------------
 	// tester code from here on
-	// TEST INIT B
 	/*
 	t_stack *temp;
 
@@ -332,68 +336,6 @@ int	main(int argc, char **argv)
 		printf("%d\n", temp->value);
 		temp = temp->next;
 	}
-	*/
-	/*
-	// TEST SWAP A
-	swap(&a_stack);
-	printf("swap!\n");
-	temp = a_stack;
-	while (temp)
-	{
-		printf("%d\n", temp->value);
-		temp = temp->next;
-	}
-	// TEST PUSH B
-	printf("push A to B!\n");
-	push(&a_stack, &b_stack);
-	printf("New A stack:\n");
-	temp = a_stack;
-	while (temp)
-	{
-		printf("%d\n", temp->value);
-		temp = temp->next;
-	}
-	printf("New B stack:\n");
-	temp = b_stack;
-	while (temp)
-	{
-		printf("%d\n", temp->value);
-		temp = temp->next;
-	}
-	// TEST ROTATE A
-	rotate(&a_stack);
-	printf("rotate A!\n");
-	temp = a_stack;
-	while (temp)
-	{
-		printf("%d\n", temp->value);
-		temp = temp->next;
-	}
-	// TEST PUSH A
-	printf("push B to A!\n");
-	push(&b_stack, &a_stack);
-	printf("New A stack:\n");
-	temp = a_stack;
-	while (temp)
-	{
-		printf("%d\n", temp->value);
-		temp = temp->next;
-	}
-	// TEST REVERSE ROTATE A
-	reverse_rotate(&a_stack);
-	printf("reverse rotate A!\n");
-	temp = a_stack;
-	while (temp)
-	{
-		printf("%d\n", temp->value);
-		temp = temp->next;
-	}
-	// TEST ON EMPTY STACK
-	swap(&b_stack);
-	push(&b_stack, &a_stack);
-	rotate(&b_stack);
-	reverse_rotate(&b_stack);
-	printf("still alive!\n");
 	*/
 	return (0);
 }
