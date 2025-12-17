@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:49:36 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/14 15:53:48 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/17 12:28:46 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 # include <stdint.h>
 # include <unistd.h>
 
-	typedef struct s_stack
+# define B_INIT_SIZE 2
+
+typedef struct s_stack
 {
 	int 			value;
 	struct s_stack *next;
