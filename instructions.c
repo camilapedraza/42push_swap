@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 19:37:44 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/13 18:43:54 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/17 16:15:51 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,10 @@ void	rotate(t_stack **stack)
 	// The first element becomes the last one.
 }
 
-void	rotate_both(void)
+void	rotate_both(t_stack **stack_1, t_stack **stack_2)
 {
-	// rr : ra and rb at the same time.
+	rotate(stack_1);
+	rotate(stack_2);// rr : ra and rb at the same time.
 }
 
 void	reverse_rotate(t_stack **stack)
@@ -101,7 +102,9 @@ void	reverse_rotate(t_stack **stack)
 	// The last element becomes the first one.
 }
 
-void	reverse_rotate_both(void)
+void	reverse_rotate_both(t_stack **stack_1, t_stack **stack_2)
 {
+	reverse_rotate(stack_1);
+	reverse_rotate(stack_2);
 	// rrr : rra and rrb at the same time.
 }
