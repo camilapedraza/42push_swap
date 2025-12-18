@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/17 21:29:59 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/18 22:15:50 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,103 +102,106 @@ void	init_moveset(t_moveset *moves)
 	moves->d_rdir = 1;
 }
 
-t_moveset find_move_cost(int s, t_stack *src, int d, t_stack *dest)
+void	find_src_moves(t_moveset *moves, int s, t_stack *src)
 {
-	size_t		size;
+	size_t	size;
+	
+	moves->s_cost = find_node_position(s, src);
+	size = stack_size(src);
+	if (moves->s_cost > (size - 1) / 2)
+	{
+		moves->s_cost = size - moves->s_cost;
+		moves->s_rdir = -1;
+	}
+}
+
+void	find_dest_moves(t_moveset *moves, int d, t_stack *dest)
+{
+	size_t	size;
+
+	moves->d_cost = find_node_position(d, dest);
+	size = stack_size(dest);
+	if (moves->d_cost > (size - 1) / 2)
+	{
+		moves->d_cost = size - moves->d_cost;
+		moves->d_rdir = -1;
+	}
+}
+
+t_moveset	find_move_cost(int s, t_stack *src, int d, t_stack *dest)
+{
 	t_moveset	moves;
 
 	init_moveset(&moves);
 	if (src)
-	{
-		moves.s_cost = find_node_position(s, src);
-		size = stack_size(src);
-		if (moves.s_cost > (size - 1) / 2)
-		{
-			moves.s_cost = size - moves.s_cost;
-			moves.s_rdir = -1;
-		}
-	}
+		find_src_moves(&moves, s, src);
 	if (dest)
-	{
-		moves.d_cost = find_node_position(d, dest);
-		size = stack_size(dest);
-		if (moves.d_cost > (size - 1) / 2)
-		{
-			moves.d_cost = size - moves.d_cost;
-			moves.d_rdir = -1;
-		}
-	}
-	moves.cost = moves.s_cost + moves.d_cost;
-	return (moves);
-}
-
-void	execute_rotations(t_stack **src, t_stack **dest, t_moveset moves)
-{
+		find_dest_moves(&moves, d, dest);
 	if (moves.d_cost > 0 && moves.s_cost > 0 && moves.d_rdir == moves.s_rdir)
 	{
 		if (moves.d_cost >= moves.s_cost)
-		{
-			while (moves.s_cost)
-			{
-				if (moves.s_rdir == 1)
-				{
-					rotate_both(dest, src);
-					ft_putstr_fd("rr\n", 1);
-				}
-				else if (moves.s_rdir == -1)
-				{
-					reverse_rotate_both(dest, src);
-					ft_putstr_fd("rrr\n", 1);
-				}
-				moves.s_cost--;
-				moves.d_cost--;
-			}
-		}
-		if (moves.d_cost < moves.s_cost)
-			while (moves.d_cost)
-			{
-				if (moves.d_rdir == 1)
-				{
-					rotate_both(dest, src);
-					ft_putstr_fd("rr\n", 1);
-				}
-				else if (moves.d_rdir == -1)
-				{
-					reverse_rotate_both(dest, src);
-					ft_putstr_fd("rrr\n", 1);
-				}
-				moves.d_cost--;
-				moves.s_cost--;
-			}
+			moves.cost = moves.d_cost;
+		else
+			moves.cost = moves.s_cost;
 	}
+	else
+		moves.cost = moves.s_cost + moves.d_cost;
+	return (moves);
+}
 
-	if (moves.d_cost && moves.d_rdir == 1)
+void	execute_combined_rotations(t_stack **src, t_stack **dest, t_moveset *moves)
+{
+	size_t	rotations;
+
+	if (moves->d_cost >= moves->s_cost)
+		rotations = moves->s_cost;
+	else
+		rotations = moves->d_cost;
+
+	while (rotations--)
 	{
-		while (moves.d_cost--)
+		if (moves->s_rdir == 1)
+		{
+			rotate_both(dest, src);
+			ft_putstr_fd("rr\n", 1);
+		}
+		else if (moves->s_rdir == -1)
+		{
+			reverse_rotate_both(dest, src);
+			ft_putstr_fd("rrr\n", 1);
+		}
+		moves->s_cost--;
+		moves->d_cost--;
+	}
+}
+
+void	execute_dest_rotations(t_stack **dest, t_moveset *moves)
+{
+	while (moves->d_cost--)
+	{
+		if (moves->d_rdir == 1)
 		{
 			rotate(dest);
 			ft_putstr_fd("rb\n", 1);
 		}
-	}
-	else if (moves.d_cost && moves.d_rdir == -1)
-	{
-		while (moves.d_cost--)
+		else
 		{
 			reverse_rotate(dest);
 			ft_putstr_fd("rrb\n", 1);
 		}
 	}
-	if (moves.s_cost && moves.s_rdir == 1)
+}
+
+void	execute_src_rotations(t_stack **src, t_moveset *moves)
+{
+	while (moves->s_cost--)
 	{
-		while (moves.s_cost--)
+		if (moves->s_rdir == 1)
 		{
 			rotate(src);
 			ft_putstr_fd("ra\n", 1);
 		}
-	}
-	else if (moves.s_cost && moves.s_rdir == -1)
-	{
-		while (moves.s_cost--)
+		else
 		{
 			reverse_rotate(src);
 			ft_putstr_fd("rra\n", 1);
@@ -206,46 +209,57 @@ void	execute_rotations(t_stack **src, t_stack **dest, t_moveset moves)
 	}
 }
 
-void	sort_b_stack(t_stack **a_stack, t_stack **b_stack)
+void execute_rotations(t_stack **src, t_stack **dest, t_moveset moves)
+{
+	if (moves.d_cost > 0 && moves.s_cost > 0 && moves.d_rdir == moves.s_rdir)
+		execute_combined_rotations(src, dest, &moves);
+	// FUNCTION TO ROTATE B
+	if (moves.d_cost)
+		execute_dest_rotations(dest, &moves);
+	if (moves.s_cost)
+		execute_src_rotations(src, &moves);
+}
+
+t_moveset find_best_moves(t_stack **a_stack, t_stack **b_stack)
 {
 	t_stack		*temp;
 	t_stack		*target;
 	t_moveset	temp_moves;
 	t_stack		*best;
+	t_moveset 	best_moves;
+
+	temp = *a_stack;
+	best = NULL;
+	init_moveset(&temp_moves);
+	while (temp)
+	{
+		target = find_target(temp->value, *b_stack);
+		if (!target)
+			break ;
+		temp_moves = find_move_cost(temp->value, *a_stack, target->value, *b_stack);
+		if (temp_moves.cost == 0 || !best || (best && (best_moves.cost > temp_moves.cost)))
+		{
+			best = temp;
+			best_moves = temp_moves;
+		}
+		if (temp_moves.cost == 0)
+			break;
+		temp = temp->next;
+	}
+	return (best_moves);
+}
+
+void	sort_b_stack(t_stack **a_stack, t_stack **b_stack)
+{
 	t_moveset	best_moves;
 	size_t		items;
 	
-	init_moveset(&temp_moves);
+	init_moveset(&best_moves);
 	items = stack_size(*a_stack);
 	while (items--)
 	{
-		temp = *a_stack;
-		best = NULL;
-		while (temp)
-		{
-			target = find_target(temp->value, *b_stack);
-			if (target)
-			{
-				temp_moves = find_move_cost(temp->value, *a_stack, target->value, *b_stack);
-				if (temp_moves.cost == 0)
-				{
-					best = temp;
-					best_moves = temp_moves;
-					break ;
-				}
-				else if (!best || (best && (best_moves.cost > temp_moves.cost)))
-				{
-					best = temp;
-					best_moves = temp_moves;
-				}
-			}
-			else
-				break ;
-			temp = temp->next;
-		}
-
+		best_moves = find_best_moves(a_stack, b_stack);
 		execute_rotations(a_stack, b_stack, best_moves);
-		// PUSH A TO B AFTER ROTATION
 		push(a_stack, b_stack);
 		ft_putstr_fd("pb\n", 1);
 	}
@@ -255,15 +269,13 @@ void	sort_a_stack(t_stack **a_stack, t_stack **b_stack)
 {
 	int			max;
 	t_moveset	max_to_top;
-	size_t		passes;
-	
-	// NULL CHECKS HERE!!!
+	size_t		items;
 
 	max = ((*find_max((*b_stack)->value, *b_stack)).value);
 	max_to_top = find_move_cost(0, NULL, max, *b_stack);
 	execute_rotations(NULL, b_stack, max_to_top);
-	passes = stack_size(*b_stack);
-	while (passes--)
+	items = stack_size(*b_stack);
+	while (items--)
 	{
 		push(b_stack, a_stack);
 		ft_putstr_fd("pa\n", 1);
@@ -280,23 +292,6 @@ void	init_b_stack(t_stack **a_stack, t_stack **b_stack)
 		push(a_stack, b_stack);
 		ft_putstr_fd("pb\n", 1);
 	}
-
-	/*
-	I THINK I NEED TO FIND THE ACTUAL MEDIAN WHEN I BUILD A!!!
-	int max;
-	t_stack *target;
-	t_moveset target_to_top;
-
-	while (pushes++ < B_INIT_SIZE)
-	{
-		max = ((*find_max((*a_stack)->value, *a_stack)).value);
-		target = find_target(max / 4, *a_stack);
-		target_to_top = find_move_cost(max, *a_stack, 0, NULL);
-		execute_rotations(a_stack, NULL, target_to_top);
-		push(a_stack, b_stack);
-		ft_putstr_fd("pb\n", 1);
-	}
-	*/
 }
 
 int	main(int argc, char **argv)
@@ -313,30 +308,8 @@ int	main(int argc, char **argv)
 	init_b_stack(&a_stack, &b_stack);
 	sort_b_stack(&a_stack, &b_stack);
 	sort_a_stack(&a_stack, &b_stack);
-	//if (is_sorted(a_stack))
-		//ft_putstr_fd("sorted succesfully!\n", 1);
-
-	// ------------------------------------------------------------------
-	// tester code from here on
-	/*
-	t_stack *temp;
-
-	printf("\n========== RESULT! =============\n");
-	printf("A stack\n");
-	temp = a_stack;
-	while (temp)
-	{
-		printf("%d\n", temp->value);
-		temp = temp->next;
-	}
-	printf("B stack\n");
-	temp = b_stack;
-	while (temp)
-	{
-		printf("%d\n", temp->value);
-		temp = temp->next;
-	}
-	*/
+	stack_free(&a_stack);
+	stack_free(&b_stack);
 	return (0);
 }
 

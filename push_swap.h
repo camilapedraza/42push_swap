@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:49:36 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/17 16:18:48 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/18 22:13:05 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ typedef struct s_stack
 
 typedef struct s_moveset
 {
-	size_t cost;
-	size_t s_cost;
-	int s_rdir;
-	size_t d_cost;
-	int d_rdir;
+	size_t	cost;
+	size_t	s_cost;
+	int		s_rdir;
+	size_t	d_cost;
+	int		d_rdir;
 }	t_moveset;
 
 t_stack *parse_input(int n, char **argv);
