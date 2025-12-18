@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   build_stack.c                                      :+:      :+:    :+:   */
+/*   ps_build_stack.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 18:20:02 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/18 22:17:27 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/18 23:00:41 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int stack_item_duplicate(t_stack **stack, t_stack **item)
+
+static int is_duplicate_item(t_stack **stack, t_stack **item)
 {
 	t_stack *temp;
 
@@ -95,7 +96,7 @@ t_stack	*build_stack(char *string)
 		}
 		// printf("%s|\n", sub_str); REMOVE
 		stack_item = stack_new(atoi_check(sub_str));
-		if (!stack_item || stack_item_duplicate(&stack, &stack_item))
+		if (!stack_item || is_duplicate_item(&stack, &stack_item))
 		{
 			stack_free(&stack);
 			quit_push_swap();

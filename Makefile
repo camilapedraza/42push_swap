@@ -6,7 +6,7 @@
 #    By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/08 17:48:59 by mpedraza          #+#    #+#              #
-#    Updated: 2025/12/14 13:19:27 by mpedraza         ###   ########.fr        #
+#    Updated: 2025/12/18 23:06:53 by mpedraza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,13 +15,16 @@ CC := cc
 CFLAGS := -Wall -Wextra -Werror
 CPPFLAGS := -I .
 SOURCES := 	push_swap.c \
-			parse_input.c \
-			build_stack.c \
-			instructions.c \
-			ps_alloc_utils.c \
-			ps_check_utils.c \
-			ps_stack_utils.c \
-			ps_string_utils.c
+			ps_build_stack.c \
+			ps_calculate_moves.c \
+			ps_execute_rotations.c \
+			ps_find_nodes.c \
+			ps_instructions.c \
+			ps_parse_input.c \
+			utils_alloc.c \
+			utils_checkers.c \
+			utils_stack.c \
+			utils_string.c
 HEADERS := push_swap.h
 OBJECTS := $(SOURCES:%.c=%.o)
 TEST_SOURCES := test_push_swap.c
