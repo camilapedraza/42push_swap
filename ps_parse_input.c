@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 14:50:59 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/16 18:05:26 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/18 22:12:37 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ static int count_chars(int n, char **argv)
 
 static char	*join_arguments(char const *s1, char const *s2)
 {
-	char *dest;
-	size_t len1;
-	size_t len2;
+	char	*dest;
+	size_t	len1;
+	size_t	len2;
 
 	len1 = 0;
 	len2 = 0;
@@ -71,8 +71,7 @@ t_stack *parse_input(int n, char **argv)
 			string = join_arguments(string, " ");
 		index++;
 	}
-	//printf("parsed string: %s\n", string);
 	a_stack = build_stack(string);
-	// I could free this string if I don't need it anymore
+	free(string);
 	return (a_stack);
 }

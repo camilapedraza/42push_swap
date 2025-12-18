@@ -6,13 +6,13 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:03:50 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/14 15:48:27 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/18 22:13:36 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-size_t stack_size(t_stack *stack)
+size_t	stack_size(t_stack *stack)
 {
 	size_t	count;
 	t_stack *temp;
@@ -31,7 +31,7 @@ size_t stack_size(t_stack *stack)
 
 t_stack	*stack_new(int value)
 {
-	t_stack *stack;
+	t_stack	*stack;
 
 	stack = malloc(sizeof(t_stack));
 	if (!stack)
