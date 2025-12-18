@@ -1,16 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ps_string_utils.c                                  :+:      :+:    :+:   */
+/*   utils_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 15:00:12 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/18 22:18:38 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/18 22:55:30 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	while (*s)
+		write(fd, s++, 1);
+}
 
 size_t	ft_strlen(const char *s)
 {
