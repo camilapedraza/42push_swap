@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/20 20:33:00 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/20 23:43:09 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,24 @@
 
 #include "push_swap.h"
 
-void	quit_push_swap(void)
+void	quit_push_swap(t_stack	**a_stack)
 {
+	if (a_stack)
+		stack_free(a_stack);
 	ft_putstr_fd("Error\n", 2);
 	exit(EXIT_FAILURE);
+}
+
+void init_b_stack(t_stack **a_stack, t_stack **b_stack)
+{
+	size_t pushes;
+
+	pushes = 0;
+	while (pushes++ < B_INIT_SIZE)
+	{
+		push(a_stack, b_stack);
+		ft_putstr_fd("pb\n", 1);
+	}
 }
 
 void	sort_b_stack(t_stack **a_stack, t_stack **b_stack)
@@ -26,6 +40,7 @@ void	sort_b_stack(t_stack **a_stack, t_stack **b_stack)
 	size_t		items;
 	size_t		break_point;
 
+	init_b_stack(a_stack, b_stack);
 	init_moveset(&best_moves);
 	items = stack_size(*a_stack);
 	break_point = items / 10;
@@ -55,45 +70,29 @@ void	sort_a_stack(t_stack **a_stack, t_stack **b_stack)
 	}
 }
 
-void	init_b_stack(t_stack **a_stack, t_stack **b_stack)
-{
-	size_t	pushes;
-
-	pushes = 0;
-	while (pushes++ < B_INIT_SIZE)
-	{
-		push(a_stack, b_stack);
-		ft_putstr_fd("pb\n", 1);
-	}
-}
-
 int	main(int argc, char **argv)
 {
+	char	*source;
 	t_stack	*a_stack;
 	t_stack	*b_stack;
 
 	if (argc < 2)
-		quit_push_swap();
-	a_stack = parse_input(argc, argv);
+		quit_push_swap(NULL);
+	source = parse_input(argc, argv);
+	// what if no source?!
+	a_stack = NULL;
+	build_a_stack(source, &a_stack);
+	free(source);
+	if (!a_stack)
+		quit_push_swap(NULL);
 	if (is_sorted(a_stack))
 	{
 		stack_free(&a_stack);
 		exit(EXIT_SUCCESS);
 	}
 	b_stack = NULL;
-	init_b_stack(&a_stack, &b_stack);
 	sort_b_stack(&a_stack, &b_stack);
 	sort_a_stack(&a_stack, &b_stack);
-	/* printf("\n==========================\n");
-	printf("A stack\n");
-	t_stack *temp = a_stack;
-	while (temp)
-	{
-		printf("%d\n", temp->value);
-		temp = temp->next;
-	}
-	if (is_sorted(a_stack))
-		write(1, "yes", 3); */
 	stack_free(&a_stack);
 	stack_free(&b_stack);
 	return (0);

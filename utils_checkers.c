@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:03:50 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/20 20:25:00 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/20 23:35:02 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,31 @@ int	is_digit(int c)
 int	is_space(int c)
 {
 	if (!(c == ' ') && !(c >= 9 && c <= 13))
+		return (0);
+	return (1);
+}
+
+int	is_integer(const char *nptr)
+{
+	long val;
+	long n;
+
+	val = 1;
+	n = 0;
+	while ((*nptr == ' ') || (*nptr >= 9 && *nptr <= 13))
+		nptr++;
+	if (*nptr == '-' || *nptr == '+')
+	{
+		if (*nptr == '-')
+			val = val * -1;
+		nptr++;
+	}
+	while (*nptr >= '0' && *nptr <= '9')
+	{
+		n = n * 10 + (*nptr - '0');
+		nptr++;
+	}
+	if (val * n > INT_MAX || val * n < INT_MIN)
 		return (0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 18:20:02 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/20 22:10:36 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/20 23:42:58 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	is_duplicate_item(t_stack **stack, t_stack **item)
 	return (0);
 }
 
-static int	atoi_check(const char *nptr)
+static int	ft_atoi(char *nptr)
 {
 	long	val;
 	long	n;
@@ -48,9 +48,7 @@ static int	atoi_check(const char *nptr)
 		n = n * 10 + (*nptr - '0');
 		nptr++;
 	}
-	if (val * n > INT_MAX || val * n < INT_MIN)
-		quit_push_swap();
-	return (n * val);
+	return (val * n);
 }
 
 static char	*extract_argument(const char *list, unsigned int start)
@@ -75,32 +73,40 @@ static char	*extract_argument(const char *list, unsigned int start)
 	return (sub_str);
 }
 
-t_stack	*build_stack(char *string)
+t_stack	*build_a_stack(char *string, t_stack **a_stack)
 {
 	int		index;
 	char	*sub_str;
-	t_stack	*stack;
-	t_stack	*stack_item;
+	t_stack	*item;
 
-	stack = NULL;
+	*a_stack = NULL;
 	index = 0;
 	while (string[index])
 	{
 		sub_str = extract_argument(string, index);
 		if (!sub_str)
 		{
-			stack_free(&stack);
-			quit_push_swap();
+			free(string);
+			quit_push_swap(a_stack);
 		}
-		stack_item = stack_new(atoi_check(sub_str));
-		if (!stack_item || is_duplicate_item(&stack, &stack_item))
+		if (!is_integer(sub_str))
 		{
-			stack_free(&stack);
-			quit_push_swap();
+			free(string);
+			free(sub_str);
+			quit_push_swap(a_stack);
 		}
-		stack_add_back(&stack, stack_item);
+		item = stack_new(ft_atoi(sub_str));
+		if (!item)
+			return (NULL);
+		if (is_duplicate_item(a_stack, &item))
+		{
+			free(string);
+			free(sub_str);
+			quit_push_swap(a_stack);
+		}
+		stack_add_back(a_stack, item);
 		index += (ft_strlen(sub_str));
 		free(sub_str);
 	}
-	return (stack);
+	return (*a_stack);
 }
