@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ps_stack_utils.c                                   :+:      :+:    :+:   */
+/*   utils_stack.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:03:50 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/18 22:13:36 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/20 20:26:02 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 size_t	stack_size(t_stack *stack)
 {
 	size_t	count;
-	t_stack *temp;
+	t_stack	*temp;
 
 	if (!stack)
 		return (0);
@@ -43,10 +43,10 @@ t_stack	*stack_new(int value)
 
 void	stack_add_back(t_stack **stack, t_stack *new)
 {
-	t_stack *temp;
+	t_stack	*temp;
 
 	if (!stack || !new)
-		return;
+		return ;
 	if (*stack == NULL)
 		*stack = new;
 	else
@@ -58,9 +58,9 @@ void	stack_add_back(t_stack **stack, t_stack *new)
 	}
 }
 
-t_stack *stack_reverse_find(t_stack *stack, int item)
+t_stack	*stack_reverse_find(t_stack *stack, int item)
 {
-	t_stack *temp;
+	t_stack	*temp;
 
 	if (!stack)
 		return (NULL);
@@ -77,10 +77,10 @@ t_stack *stack_reverse_find(t_stack *stack, int item)
 
 void	stack_free(t_stack **stack)
 {
-	t_stack *temp;
+	t_stack	*temp;
 
 	if (!stack)
-		return;
+		return ;
 	while (*stack)
 	{
 		temp = (*stack)->next;
