@@ -6,16 +6,15 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 18:20:02 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/18 23:00:41 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/20 22:10:36 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-
-static int is_duplicate_item(t_stack **stack, t_stack **item)
+static int	is_duplicate_item(t_stack **stack, t_stack **item)
 {
-	t_stack *temp;
+	t_stack	*temp;
 
 	if (!stack)
 		return (0);
@@ -31,8 +30,8 @@ static int is_duplicate_item(t_stack **stack, t_stack **item)
 
 static int	atoi_check(const char *nptr)
 {
-	long val;
-	long n;
+	long	val;
+	long	n;
 
 	val = 1;
 	n = 0;
@@ -50,7 +49,6 @@ static int	atoi_check(const char *nptr)
 		nptr++;
 	}
 	if (val * n > INT_MAX || val * n < INT_MIN)
-		// is this enough or do I need to free stuff?
 		quit_push_swap();
 	return (n * val);
 }
@@ -58,7 +56,7 @@ static int	atoi_check(const char *nptr)
 static char	*extract_argument(const char *list, unsigned int start)
 {
 	int		end;
-	int 	digits;
+	int		digits;
 	char	*sub_str;
 
 	end = start;
@@ -94,7 +92,6 @@ t_stack	*build_stack(char *string)
 			stack_free(&stack);
 			quit_push_swap();
 		}
-		// printf("%s|\n", sub_str); REMOVE
 		stack_item = stack_new(atoi_check(sub_str));
 		if (!stack_item || is_duplicate_item(&stack, &stack_item))
 		{
@@ -103,7 +100,7 @@ t_stack	*build_stack(char *string)
 		}
 		stack_add_back(&stack, stack_item);
 		index += (ft_strlen(sub_str));
-		// printf("index: %d\n", index); REMOVE
+		free(sub_str);
 	}
 	return (stack);
 }

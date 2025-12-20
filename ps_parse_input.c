@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_input.c                                      :+:      :+:    :+:   */
+/*   ps_parse_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 14:50:59 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/18 22:12:37 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/20 22:02:49 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int count_chars(int n, char **argv)
+static int	count_chars(int n, char **argv)
 {
-	int i;
-	int j;
-	int count;
+	int	i;
+	int	j;
+	int	count;
 
 	i = 1;
 	count = 0;
@@ -30,6 +30,7 @@ static int count_chars(int n, char **argv)
 	return (count);
 }
 
+/*
 static char	*join_arguments(char const *s1, char const *s2)
 {
 	char	*dest;
@@ -51,13 +52,15 @@ static char	*join_arguments(char const *s1, char const *s2)
 		ft_strlcat(dest, s2, (len1 + len2 + 1));
 	return (dest);
 }
+	*/
 
-t_stack *parse_input(int n, char **argv)
+t_stack	*parse_input(int n, char **argv)
 {
 	int		length;
 	char	*string;
 	int		index;
-	t_stack *a_stack;
+	size_t	size;
+	t_stack	*a_stack;
 
 	length = count_chars(n, argv);
 	string = ft_calloc(sizeof(char), (length + n - 1));
@@ -66,9 +69,9 @@ t_stack *parse_input(int n, char **argv)
 	index = 1;
 	while (index < n)
 	{
-		string = join_arguments(string, argv[index]);
-		if (index < n - 1)
-			string = join_arguments(string, " ");
+		ft_strlcat(string, " ", ft_strlen(string) + 1);
+		size = ft_strlen(string) + ft_strlen(argv[index]);
+		ft_strlcat(string, argv[index], size + 1);
 		index++;
 	}
 	a_stack = build_stack(string);

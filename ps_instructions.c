@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 19:37:44 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/18 22:42:21 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/20 20:20:58 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 void	push(t_stack **src, t_stack **dest)
 {
-	t_stack *temp;
+	t_stack	*temp;
 
 	if (!src || !*src || !dest)
 		return ;
@@ -44,7 +44,7 @@ void	rotate(t_stack **stack)
 	t_stack	*last;
 
 	if (!stack || !*stack || !(*stack)->next)
-		return;
+		return ;
 	temp = *stack;
 	*stack = temp->next;
 	last = stack_reverse_find(*stack, -1);
@@ -64,7 +64,7 @@ void	reverse_rotate(t_stack **stack)
 	t_stack	*next_to_last;
 
 	if (!stack || !*stack || !(*stack)->next)
-		return;
+		return ;
 	next_to_last = stack_reverse_find(*stack, -2);
 	last = next_to_last->next;
 	next_to_last->next = NULL;

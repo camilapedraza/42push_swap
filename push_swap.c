@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/18 23:08:13 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/20 20:33:00 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ void	sort_b_stack(t_stack **a_stack, t_stack **b_stack)
 {
 	t_moveset	best_moves;
 	size_t		items;
-	
+	size_t		break_point;
+
 	init_moveset(&best_moves);
 	items = stack_size(*a_stack);
+	break_point = items / 10;
 	while (items--)
 	{
 		best_moves = find_best_moves(a_stack, b_stack);
@@ -42,8 +44,8 @@ void	sort_a_stack(t_stack **a_stack, t_stack **b_stack)
 	t_moveset	max_to_top;
 	size_t		items;
 
-	max = ((*find_max((*b_stack)->value, *b_stack)).value);
-	max_to_top = find_move_cost(0, NULL, max, *b_stack);
+	max = ((*find_max(*b_stack)).value);
+	max_to_top = find_cost(0, NULL, max, *b_stack);
 	execute_rotations(NULL, b_stack, max_to_top);
 	items = stack_size(*b_stack);
 	while (items--)
@@ -74,11 +76,24 @@ int	main(int argc, char **argv)
 		quit_push_swap();
 	a_stack = parse_input(argc, argv);
 	if (is_sorted(a_stack))
+	{
+		stack_free(&a_stack);
 		exit(EXIT_SUCCESS);
+	}
 	b_stack = NULL;
 	init_b_stack(&a_stack, &b_stack);
 	sort_b_stack(&a_stack, &b_stack);
 	sort_a_stack(&a_stack, &b_stack);
+	/* printf("\n==========================\n");
+	printf("A stack\n");
+	t_stack *temp = a_stack;
+	while (temp)
+	{
+		printf("%d\n", temp->value);
+		temp = temp->next;
+	}
+	if (is_sorted(a_stack))
+		write(1, "yes", 3); */
 	stack_free(&a_stack);
 	stack_free(&b_stack);
 	return (0);

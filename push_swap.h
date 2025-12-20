@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:49:36 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/18 23:08:14 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/20 20:23:43 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,23 @@
 
 typedef struct s_stack
 {
-	int 			value;
-	struct s_stack *next;
+	int				value;
+	struct s_stack	*next;
 }	t_stack;
 
 typedef struct s_moveset
 {
 	size_t	cost;
-	size_t	s_cost;
-	int		s_rdir;
-	size_t	d_cost;
-	int		d_rdir;
+	size_t	a_cost;
+	int		a_dir;
+	size_t	b_cost;
+	int		b_dir;
 }	t_moveset;
 
 /* MAIN FUNCTIONS */
 t_stack		*parse_input(int n, char **argv);
 t_stack		*build_stack(char *string);
-void		quit_push_swap();
+void		quit_push_swap(void);
 
 /* SORT INSTRUCTIONS */
 void		push(t_stack **src, t_stack **dest);
@@ -49,7 +49,7 @@ void		rotate_both(t_stack **stack_1, t_stack **stack_2);
 void		reverse_rotate_both(t_stack **stack_1, t_stack **stack_2);
 
 /* FIND NODES */
-t_stack		*find_max(int n, t_stack *stack);
+t_stack		*find_max(t_stack *stack);
 t_stack		*find_target(int n, t_stack *stack);
 size_t		find_node_position(int n, t_stack *stack);
 
@@ -57,13 +57,13 @@ size_t		find_node_position(int n, t_stack *stack);
 void		init_moveset(t_moveset *moves);
 void		find_dest_moves(t_moveset *moves, int d, t_stack *dest);
 void		find_src_moves(t_moveset *moves, int s, t_stack *src);
-t_moveset	find_move_cost(int s, t_stack *src, int d, t_stack *dest);
+t_moveset	find_cost(int s, t_stack *src, int d, t_stack *dest);
 t_moveset	find_best_moves(t_stack **a_stack, t_stack **b_stack);
 
 /* EXECUTE ROTATIONS */
-void		execute_combined_rotations(t_stack **src, t_stack **dest, t_moveset *moves);
-void		execute_dest_rotations(t_stack **dest, t_moveset *moves);
-void		execute_src_rotations(t_stack **src, t_moveset *moves);
+void		sync_rotations(t_stack **src, t_stack **dest, t_moveset *moves);
+void		b_rotations(t_stack **dest, t_moveset *moves);
+void		a_rotations(t_stack **src, t_moveset *moves);
 void		execute_rotations(t_stack **src, t_stack **dest, t_moveset moves);
 
 /* UTILITIES: ALLOCATE MEMORY */
@@ -87,7 +87,5 @@ size_t		ft_strlcpy(char *dst, const char *src, size_t siz);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 size_t		ft_strlen(const char *s);
 size_t		ft_strlcat(char *dst, const char *src, size_t siz);
-
-
 
 #endif
