@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:49:36 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/20 20:23:43 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/20 23:34:56 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ typedef struct s_moveset
 }	t_moveset;
 
 /* MAIN FUNCTIONS */
-t_stack		*parse_input(int n, char **argv);
-t_stack		*build_stack(char *string);
-void		quit_push_swap(void);
+char		*parse_input(int n, char **argv);
+t_stack		*build_a_stack(char *string, t_stack **a_stack);
+void		quit_push_swap(t_stack **a_stack);
 
 /* SORT INSTRUCTIONS */
 void		push(t_stack **src, t_stack **dest);
@@ -72,6 +72,7 @@ void		*ft_calloc(size_t nmemb, size_t size);
 /* UTILITIES: CHECKERS*/
 int			is_space(int c);
 int			is_digit(int c);
+int			is_integer(const char *nptr);
 int			is_sorted(t_stack *stack);
 
 /* UTILITIES: STACK OPERATIONS */
