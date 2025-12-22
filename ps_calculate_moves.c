@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:37:06 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/20 20:15:30 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/22 19:30:56 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,26 @@ void	init_moveset(t_moveset *moves)
 	moves->b_dir = 1;
 }
 
-void	find_src_moves(t_moveset *moves, int s, t_stack *src)
+void	find_a_moves(t_moveset *moves, int s, t_stack *src)
 {
 	size_t	size;
 
 	moves->a_cost = find_node_position(s, src);
 	size = stack_size(src);
-	if (moves->a_cost > (size - 1) / 2)
+	if (moves->a_cost > size / 2)
 	{
 		moves->a_cost = size - moves->a_cost;
 		moves->a_dir = -1;
 	}
 }
 
-void	find_dest_moves(t_moveset *moves, int d, t_stack *dest)
+void	find_b_moves(t_moveset *moves, int d, t_stack *dest)
 {
 	size_t	size;
 
 	moves->b_cost = find_node_position(d, dest);
 	size = stack_size(dest);
-	if (moves->b_cost > (size - 1) / 2)
+	if (moves->b_cost > size / 2)
 	{
 		moves->b_cost = size - moves->b_cost;
 		moves->b_dir = -1;
@@ -53,9 +53,9 @@ t_moveset	find_cost(int s, t_stack *src, int d, t_stack *dest)
 
 	init_moveset(&moves);
 	if (src)
-		find_src_moves(&moves, s, src);
+		find_a_moves(&moves, s, src);
 	if (dest)
-		find_dest_moves(&moves, d, dest);
+		find_b_moves(&moves, d, dest);
 	if (moves.b_cost > 0 && moves.a_cost > 0 && moves.b_dir == moves.a_dir)
 	{
 		if (moves.b_cost >= moves.a_cost)

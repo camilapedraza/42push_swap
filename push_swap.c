@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/20 23:43:09 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/22 19:43:34 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	quit_push_swap(t_stack	**a_stack)
 	exit(EXIT_FAILURE);
 }
 
-void init_b_stack(t_stack **a_stack, t_stack **b_stack)
+void	init_b_stack(t_stack **a_stack, t_stack **b_stack)
 {
-	size_t pushes;
+	size_t	pushes;
 
 	pushes = 0;
 	while (pushes++ < B_INIT_SIZE)
@@ -38,12 +38,10 @@ void	sort_b_stack(t_stack **a_stack, t_stack **b_stack)
 {
 	t_moveset	best_moves;
 	size_t		items;
-	size_t		break_point;
 
 	init_b_stack(a_stack, b_stack);
 	init_moveset(&best_moves);
 	items = stack_size(*a_stack);
-	break_point = items / 10;
 	while (items--)
 	{
 		best_moves = find_best_moves(a_stack, b_stack);
@@ -72,17 +70,13 @@ void	sort_a_stack(t_stack **a_stack, t_stack **b_stack)
 
 int	main(int argc, char **argv)
 {
-	char	*source;
 	t_stack	*a_stack;
 	t_stack	*b_stack;
 
 	if (argc < 2)
 		quit_push_swap(NULL);
-	source = parse_input(argc, argv);
-	// what if no source?!
 	a_stack = NULL;
-	build_a_stack(source, &a_stack);
-	free(source);
+	build_a_stack(argc, argv, &a_stack);
 	if (!a_stack)
 		quit_push_swap(NULL);
 	if (is_sorted(a_stack))
@@ -95,12 +89,5 @@ int	main(int argc, char **argv)
 	sort_a_stack(&a_stack, &b_stack);
 	stack_free(&a_stack);
 	stack_free(&b_stack);
-	return (0);
+	exit(EXIT_SUCCESS);
 }
-
-// LIMITS (MINIMAL)
-// 100 numbers under 700, 1100 or 1300 operations
-// 500 numbers under 5500, 8500 or 11500 operations
-
-// LIMITS (FULL)
-// 100 in less than 700 and 500 in less than 5500
