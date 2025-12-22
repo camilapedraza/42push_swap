@@ -6,7 +6,7 @@
 #    By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/08 17:48:59 by mpedraza          #+#    #+#              #
-#    Updated: 2025/12/20 18:10:05 by mpedraza         ###   ########.fr        #
+#    Updated: 2025/12/22 20:45:54 by mpedraza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,6 @@ SOURCES := 	push_swap.c \
 			utils_string.c
 HEADERS := push_swap.h
 OBJECTS := $(SOURCES:%.c=%.o)
-TEST_SOURCES := test_push_swap.c
-TEST_OBJECTS := $(TEST_SOURCES:%.c=%.o)
 
 all: $(NAME)
 
@@ -42,6 +40,4 @@ fclean: clean
 
 re: fclean all
 
-test: all $(TEST_OBJECTS)
-
-.PHONY: all clean fclean re test
+.PHONY: all clean fclean re
