@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:03:50 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/20 23:35:02 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/22 19:17:22 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	is_space(int c)
 
 int	is_integer(const char *nptr)
 {
-	long val;
-	long n;
+	long	val;
+	long	n;
 
 	val = 1;
 	n = 0;

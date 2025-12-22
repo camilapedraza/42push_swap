@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 18:20:02 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/20 23:42:58 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/22 19:20:08 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	ft_atoi(char *nptr)
 	return (val * n);
 }
 
-static char	*extract_argument(const char *list, unsigned int start)
+static char	*extract_argument(const char *string, unsigned int start)
 {
 	int		end;
 	int		digits;
@@ -59,26 +59,55 @@ static char	*extract_argument(const char *list, unsigned int start)
 
 	end = start;
 	digits = 0;
-	while (is_space(list[end]))
+	while (is_space(string[end]))
 		end++;
-	if (list[end] == '-' || list[end] == '+')
+	if (string[end] == '-' || string[end] == '+')
 		end++;
-	while (is_digit(list[end++]))
+	while (is_digit(string[end++]))
 		digits++;
 	if (!digits)
 		return (NULL);
-	sub_str = ft_substr(list, start, (end - start - 1));
+	sub_str = ft_substr(string, start, (end - start - 1));
 	if (!sub_str)
 		return (NULL);
 	return (sub_str);
 }
 
-t_stack	*build_a_stack(char *string, t_stack **a_stack)
+t_stack	*build_item(char *sub_str, char *string, t_stack **a_stack)
 {
+	t_stack	*item;
+
+	item = NULL;
+	if (!is_integer(sub_str))
+	{
+		free(sub_str);
+		free(string);
+		quit_push_swap(a_stack);
+	}
+	item = stack_new(ft_atoi(sub_str));
+	if (!item)
+	{
+		free(string);
+		exit(EXIT_FAILURE);
+	}
+	if (is_duplicate_item(a_stack, &item))
+	{
+		free(sub_str);
+		free(string);
+		free(item);
+		quit_push_swap(a_stack);
+	}
+	return (item);
+}
+
+t_stack	*build_a_stack(int argc, char **argv, t_stack **a_stack)
+{
+	char	*string;
 	int		index;
 	char	*sub_str;
 	t_stack	*item;
 
+	string = parse_input(argc, argv);
 	*a_stack = NULL;
 	index = 0;
 	while (string[index])
@@ -89,24 +118,13 @@ t_stack	*build_a_stack(char *string, t_stack **a_stack)
 			free(string);
 			quit_push_swap(a_stack);
 		}
-		if (!is_integer(sub_str))
-		{
-			free(string);
-			free(sub_str);
-			quit_push_swap(a_stack);
-		}
-		item = stack_new(ft_atoi(sub_str));
+		item = build_item(sub_str, string, a_stack);
 		if (!item)
 			return (NULL);
-		if (is_duplicate_item(a_stack, &item))
-		{
-			free(string);
-			free(sub_str);
-			quit_push_swap(a_stack);
-		}
 		stack_add_back(a_stack, item);
 		index += (ft_strlen(sub_str));
 		free(sub_str);
 	}
+	free(string);
 	return (*a_stack);
 }

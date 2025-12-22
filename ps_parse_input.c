@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 14:50:59 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/20 23:39:31 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/22 19:17:49 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,10 @@ char	*parse_input(int n, char **argv)
 	index = 1;
 	while (index < n)
 	{
-		ft_strlcat(string, " ", ft_strlen(string) + 1);
+		ft_strlcat(string, " ", ft_strlen(string) + 2);
 		size = ft_strlen(string) + ft_strlen(argv[index]);
 		ft_strlcat(string, argv[index], size + 1);
 		index++;
 	}
-	// maybe I should move all the extraction here
-	// extract substrings (check valid), turn into ints (check is integer), add to an array
-	// then build stack from int array instead of from single string
 	return (string);
 }
