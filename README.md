@@ -24,3 +24,6 @@ Although the project also involves parsing and validating arguments, the focus i
 I relied mainly on different versions of the so-called __"Turk Algorithm"__ to accomplish the task, but implemented my own version. You can read on some variations of Turk here:
 - [Push_Swap Turk algorithm explained in 6 steps](https://pure-forest.medium.com/push-swap-turk-algorithm-explained-in-6-steps-4c6650a458c0) by Yutong Deng
 - [Push Swap — A journey to find most efficient sorting algorithm](https://medium.com/@ayogun/push-swap-c1f5d2d41e97) by A. Yigit Ogun
+
+Although I created test cases and manually ran tests on all my code, I relied on an automated tester in the final stages of the project. The tester I used can generate random seeds of integers of the requested size and run them against your code with a single command. This allows testing to be quicker, and it provides immediate checks on failed sorting or moves going over the desired limits. I highly recomend it:
+- [push_swap_tester](https://github.com/SimonCROS/push_swap_tester?tab=readme-ov-file) by SimonCROS
