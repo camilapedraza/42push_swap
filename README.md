@@ -8,12 +8,12 @@ Although the project also involves parsing and validating arguments, the focus i
 
 # INSTRUCTIONS
 1. Clone the project and run `make` inside the root directory.
-2. Run the program with `./push_swap`.
+2. Run the program with `./push_swap` followed by the list of integers you want to sort.
 3. You must provide at least one integer as argument, i.e `./push_swap 42`
 
-- The program will only output instructions if they are required to sort the integers provided (if you provide a sorted list, there will be no output).
-- The program will only run if there is at least one argument, the numbers provided are integers, and there are no duplicates (it will display `Error` otherwise).
-- The project originallt allows 11 possible moves, but this project only uses a subset of 8 of those moves. They are abbreviated as follows:
+- The program will only output instructions if they are required to sort the integers provided (if you provide a sorted list or a single integer, there will be no output).
+- The program will only run if there is at least one argument, the numbers provided fit into an integer, and there are no duplicates (it will display `Error` otherwise).
+- The project originally allows 11 possible moves, but this project only uses a subset of 8 of those moves. They are abbreviated as follows:
   - `pa` and `pb` (__push__ - move the top element of stack a to stack b, or the inverse)
   - `ra` and `rb` (__rotate__ - move the top element of the stack to the bottom of the same stack)
   - `rra` and `rrb` (__reverse rotate__ - move the bottom element of the stack to the top of the same stack)
