@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 18:20:02 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/22 19:20:08 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/28 15:54:49 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,9 @@ t_stack	*build_item(char *sub_str, char *string, t_stack **a_stack)
 	item = stack_new(ft_atoi(sub_str));
 	if (!item)
 	{
+		free(sub_str);
 		free(string);
-		exit(EXIT_FAILURE);
+		quit_push_swap(a_stack);
 	}
 	if (is_duplicate_item(a_stack, &item))
 	{
