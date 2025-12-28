@@ -6,11 +6,9 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/22 19:43:34 by mpedraza         ###   ########.fr       */
+/*   Updated: 2025/12/28 15:41:05 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// AUTHORIZED : read, write, malloc, free, exit
 
 #include "push_swap.h"
 
