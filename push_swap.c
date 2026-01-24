@@ -6,13 +6,13 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:48:05 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/28 15:41:05 by mpedraza         ###   ########.fr       */
+/*   Updated: 2026/01/24 19:07:27 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	quit_push_swap(t_stack	**a_stack)
+void	quit_push_swap(t_stack **a_stack)
 {
 	if (a_stack)
 		stack_free(a_stack);
@@ -77,15 +77,18 @@ int	main(int argc, char **argv)
 	build_a_stack(argc, argv, &a_stack);
 	if (!a_stack)
 		quit_push_swap(NULL);
-	if (is_sorted(a_stack))
+	if (!is_sorted(a_stack))
 	{
-		stack_free(&a_stack);
-		exit(EXIT_SUCCESS);
+		b_stack = NULL;
+		if (stack_size(a_stack) < 6)
+			basic_sort(&a_stack, &b_stack);
+		else
+		{
+			sort_b_stack(&a_stack, &b_stack);
+			sort_a_stack(&a_stack, &b_stack);
+			stack_free(&b_stack);
+		}
 	}
-	b_stack = NULL;
-	sort_b_stack(&a_stack, &b_stack);
-	sort_a_stack(&a_stack, &b_stack);
 	stack_free(&a_stack);
-	stack_free(&b_stack);
 	exit(EXIT_SUCCESS);
 }

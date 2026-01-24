@@ -13,7 +13,8 @@ Although the project also involves parsing and validating arguments, the focus i
 
 - The program will only output instructions if they are required to sort the integers provided (if you provide a sorted list or a single integer, there will be no output).
 - The program will only run if there is at least one argument, the numbers provided fit into an integer, and there are no duplicates (it will display `Error` otherwise).
-- The project originally allows 11 possible moves, but this project only uses a subset of 8 of those moves. They are abbreviated as follows:
+- The project originally allows 11 possible moves, but this project only uses a subset of 9 of those moves. They are abbreviated as follows:
+  - `sa` (__swap__ - invert the order of the first and second elements of stack a)
   - `pa` and `pb` (__push__ - move the top element of stack a to stack b, or the inverse)
   - `ra` and `rb` (__rotate__ - move the top element of the stack to the bottom of the same stack)
   - `rra` and `rrb` (__reverse rotate__ - move the bottom element of the stack to the top of the same stack)

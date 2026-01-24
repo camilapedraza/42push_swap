@@ -6,7 +6,7 @@
 #    By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/08 17:48:59 by mpedraza          #+#    #+#              #
-#    Updated: 2025/12/22 20:45:54 by mpedraza         ###   ########.fr        #
+#    Updated: 2026/01/24 17:19:54 by mpedraza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,13 @@ CC := cc
 CFLAGS := -Wall -Wextra -Werror
 CPPFLAGS := -I .
 SOURCES := 	push_swap.c \
+			ps_basic_sort.c \
 			ps_build_stack.c \
 			ps_calculate_moves.c \
 			ps_execute_rotations.c \
 			ps_find_nodes.c \
-			ps_instructions.c \
+			ps_moves_single.c \
+			ps_moves_double.c \
 			ps_parse_input.c \
 			utils_alloc.c \
 			utils_checkers.c \

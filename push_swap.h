@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 17:49:36 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/22 19:28:30 by mpedraza         ###   ########.fr       */
+/*   Updated: 2026/01/24 19:07:47 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void		quit_push_swap(t_stack **a_stack);
 
 /* SORT INSTRUCTIONS */
 void		push(t_stack **src, t_stack **dest);
+void		swap(t_stack **stack);
 void		rotate(t_stack **stack);
 void		reverse_rotate(t_stack **stack);
 void		rotate_both(t_stack **stack_1, t_stack **stack_2);
@@ -53,6 +54,9 @@ t_stack		*find_min(t_stack *stack);
 t_stack		*find_max(t_stack *stack);
 t_stack		*find_target(int n, t_stack *stack);
 size_t		find_node_position(int n, t_stack *stack);
+
+/* BASIC SORT */
+void		basic_sort(t_stack **a_stack, t_stack **b_stack);
 
 /* CALCULATE MOVES */
 void		init_moveset(t_moveset *moves);

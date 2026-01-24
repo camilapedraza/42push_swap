@@ -6,7 +6,7 @@
 /*   By: mpedraza <mpedraza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:46:20 by mpedraza          #+#    #+#             */
-/*   Updated: 2025/12/22 19:43:25 by mpedraza         ###   ########.fr       */
+/*   Updated: 2026/01/24 19:04:37 by mpedraza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,24 @@ t_stack	*find_max(t_stack *stack)
 		temp = temp->next;
 	}
 	return (max);
+}
+
+t_stack	*find_min(t_stack *stack)
+{
+	t_stack	*temp;
+	t_stack	*min;
+
+	if (!stack)
+		return (NULL);
+	temp = stack;
+	min = stack;
+	while (temp)
+	{
+		if (temp->value < min->value)
+			min = temp;
+		temp = temp->next;
+	}
+	return (min);
 }
 
 t_stack	*find_target(int n, t_stack *stack)
